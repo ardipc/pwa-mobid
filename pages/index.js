@@ -13,7 +13,7 @@ export default function Home() {
         <link href="/css/style.css" rel="stylesheet" />
 
         <link href="/_manifest.json" rel="manifest" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/mobile-192x192.png" />
 
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
