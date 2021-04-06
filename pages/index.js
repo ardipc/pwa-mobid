@@ -6,14 +6,14 @@ export default function Home() {
     <>
 
       <Head>
-        <title>Template</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Mobil</title>
+        <link rel="icon" href="/icons/mobile-48.png" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css" rel="stylesheet" />
         <link href="/css/style.css" rel="stylesheet" />
 
         <link href="/_manifest.json" rel="manifest" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/mobile-192x192.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
 
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
