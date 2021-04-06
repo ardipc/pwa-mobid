@@ -15,9 +15,11 @@ export default function Home() {
         <link href="/_manifest.json" rel="manifest" />
         <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png" />
 
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#000" />
+        <meta name="theme-color" content="#0b53be" />
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
         <script src="/js/app.js"></script>
