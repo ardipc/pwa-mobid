@@ -2,7 +2,23 @@ import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
 
+import Router from 'next/router'
+import { useState, useEffect } from 'react'
+
 export default function Cari() {
+
+  const [user, setUser] = useState({});
+  const [load, setLoad] = useState(true)
+
+  useEffect(() => {
+    const session = localStorage.getItem('session');
+    if(session) {
+      console.log('Youre loged.')
+    }
+    else {
+      Router.push('/login');
+    }
+  }, [])
 
   return (
     <>
@@ -76,25 +92,86 @@ export default function Cari() {
           <p style={{color: '#0d6efd', fontWeight: 'bold'}}>F A V O R I T</p>
         </section>
 
+        <section className="px-3 pt-3">
+          <div className="scrolling-wrapper row flex-row flex-nowrap">
+            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Semua</span></div>
+            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Bengkel Mobil</span></div>
+            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Cuci Mobil</span></div>
+            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Pom Bensin</span></div>
+            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Cutting</span></div>
+            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Dealer</span></div>
+            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Velg</span></div>
+          </div>
+        </section>
+
+        <section className="p-3">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" style={{borderTopRightRadius: '0px', borderBottomRightRadius: '0px'}}>
+                <i className="bi bi-search"></i>
+              </span>
+            </div>
+            <input placeHolder="Cari..." type="text" class="form-control" aria-label="Amount (to the nearest dollar)" />
+          </div>
+        </section>
+
+        <div className="divider"></div>
+
         <section className="bg-white p-3">
 
-          <div className="update text-center m-3">
-            <Image
-              src="/img/nodata.png"
-              alt="No data"
-              width={120}
-              height={120}
-            />
-
-          <h5 className="mt-3">Oops</h5>
-            <p>Untuk dapat mengakses menu ini, Kamu harus masuk ke Carsworld ini !</p>
-
-            <div className="d-grid gap-2">
-              <Link href="/login">
-                <button className="btn btn-block btn-outline-primary">MASUK</button>
-              </Link>
+          <article class="card mb-3">
+            <div class="row g-0">
+              <div class="col-sm-5">
+                <div className="card card-block card-1"></div>
+              </div>
+              <div class="col-md-7">
+                <div class="card-body">
+                  <Link href="/detail">
+                    <h5 className="card-title">PT Bintraco Dharma Tbk</h5>
+                  </Link>
+                  <p class="card-text">Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.</p>
+                  <div className="rating">
+                    <i className="bi bi-star-fill"></i>
+                    <i className="bi bi-star-fill"></i>
+                    <i className="bi bi-star-half"></i>
+                    <i className="bi bi-star"></i>
+                    <i className="bi bi-star"></i>
+                  </div>
+                  <p class="card-text">
+                    <strong>3.0 KM</strong>
+                    <i className="bi bi-heart-fill float-end"></i>
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
+          </article>
+
+          <article class="card mb-3">
+            <div class="row g-0">
+              <div class="col-sm-5">
+                <div className="card card-block card-1"></div>
+              </div>
+              <div class="col-md-7">
+                <div class="card-body">
+                  <Link href="/detail">
+                    <h5 className="card-title">PT Bintraco Dharma Tbk</h5>
+                  </Link>
+                  <p class="card-text">Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.</p>
+                  <div className="rating">
+                    <i className="bi bi-star-fill"></i>
+                    <i className="bi bi-star-fill"></i>
+                    <i className="bi bi-star-half"></i>
+                    <i className="bi bi-star"></i>
+                    <i className="bi bi-star"></i>
+                  </div>
+                  <p class="card-text">
+                    <strong>3.0 KM</strong>
+                    <i className="bi bi-heart-fill float-end"></i>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
 
         </section>
 

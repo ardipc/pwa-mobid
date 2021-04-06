@@ -15,7 +15,7 @@ export default function Home() {
         <link href="/_manifest.json" rel="manifest" />
         <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.png" />
 
-        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
@@ -135,7 +135,10 @@ export default function Home() {
                     <i className="bi bi-star"></i>
                     <i className="bi bi-star"></i>
                   </div>
-                  <p class="card-text"><strong>3.0 KM</strong></p>
+                  <p class="card-text">
+                    <strong>3.0 KM</strong>
+                    <i className="bi bi-heart float-end"></i>
+                  </p>
                 </div>
               </div>
             </div>
@@ -159,7 +162,10 @@ export default function Home() {
                     <i className="bi bi-star"></i>
                     <i className="bi bi-star"></i>
                   </div>
-                  <p class="card-text"><strong>3.0 KM</strong></p>
+                  <p class="card-text">
+                    <strong>3.0 KM</strong>
+                    <i className="bi bi-heart float-end"></i>
+                  </p>
                 </div>
               </div>
             </div>
@@ -182,7 +188,10 @@ export default function Home() {
                     <i className="bi bi-star"></i>
                     <i className="bi bi-star"></i>
                   </div>
-                  <p class="card-text"><strong>3.0 KM</strong></p>
+                  <p class="card-text">
+                    <strong>3.0 KM</strong>
+                    <i className="bi bi-heart float-end"></i>
+                  </p>
                 </div>
               </div>
             </div>

@@ -33,8 +33,7 @@ export default function Akun() {
     else {
       Router.push('/login');
     }
-
-  })
+  }, [])
 
   const btnLogout = (e) => {
     localStorage.removeItem('session');
@@ -206,7 +205,7 @@ export default function Akun() {
             </div>
 
             <div className="d-grid gap-2 mb-2">
-              <button type="button" className="btn btn-outline-primary btn-sm">Simpan Akun</button>
+              <button type="button" className="btn btn-outline-primary">Simpan Akun</button>
             </div>
           </form>
 
@@ -241,7 +240,7 @@ export default function Akun() {
             </div>
 
             <div className="d-grid gap-2 mb-2">
-              <button type="button" className="btn btn-outline-primary btn-sm">Simpan Password</button>
+              <button type="button" className="btn btn-outline-primary">Simpan Password</button>
             </div>
           </form>
 
