@@ -73,7 +73,7 @@ export default function Home() {
       <div className="pb-5 mobile">
 
         <section className="text-center pt-4">
-          <p style={{color: '#0d6efd', fontWeight: 'bold'}}>C A R S W O R L D</p>
+          <img src="/icons/cw.png" className="img-fluid" style={{width: '32%'}} />
         </section>
 
         <section className="p-3">
