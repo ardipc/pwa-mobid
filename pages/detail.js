@@ -21,10 +21,10 @@ export default function Detail() {
           <article>
             <div className="cover">
               <Link href="/">
-                <i className="bi bi-arrow-left back-top"></i>
+                <i className="bi bi-arrow-left back-top cursor-pointer"></i>
               </Link>
-              <i className="bi bi-heart favorit-top"></i>
-              <i className="bi bi-share share-top"></i>
+              <i className="bi bi-heart favorit-top cursor-pointer"></i>
+              <i className="bi bi-share share-top cursor-pointer"></i>
               <div className={`bg-${img}`} style={{width: '100%', height: '300px', marginTop: '-24px'}}></div>
             </div>
 
@@ -108,7 +108,7 @@ export default function Detail() {
         <section className="bg-white p-3">
           <p className="h6 mb-3">
             Reviews
-            <a className="float-end text-decoration-none font-weight-normal">Lainnya</a>
+            <a className="float-end text-decoration-none font-weight-normal cursor-pointer">Lainnya</a>
           </p>
 
           <div className="scrolling-wrapper row flex-row flex-nowrap">

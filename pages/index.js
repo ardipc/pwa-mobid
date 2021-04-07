@@ -93,7 +93,7 @@ export default function Home() {
                       </div>
                       <p className="card-text">
                         <strong>{item.distance}</strong>
-                        <i className="bi bi-heart float-end"></i>
+                        <i className="bi bi-heart float-end cursor-pointer"></i>
                       </p>
                     </div>
                   </div>
