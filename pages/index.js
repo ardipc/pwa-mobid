@@ -1,84 +1,28 @@
 import Link from 'next/link'
-import Head from 'next/head'
+
+import Heading from '../components/heading'
+import Footer from '../components/footer'
+import NavBottom from '../components/nav-bottom'
+
+import { useRouter } from 'next/router'
 
 export default function Home() {
+
+  const nearMe = [
+    {id: 1, title: 'PT Bintraco Dharma Tbk', address: 'Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.', rating: 4, distance: '3.0 KM'},
+    {id: 2, title: 'PT MPM Rental Motor', address: 'Sunburst, CBD Lot II, Jl. Kapten Soebijanto Djojohadikusumo No.10, Lengkong Gudang.', rating: 3, distance: '4.0 KM'},
+    {id: 3, title: 'Sewa Mobil BSD', address: 'Ruko Malibu, Jl Pahlawan Seribu, BSD Tangerang Selatan, Lengkong Gudang.', rating: 3, distance: '10.0 KM'}
+  ]
+
+  const router = useRouter()
+  const { asPath } = router
+
   return (
     <>
 
-      <Head>
-        <title>Mobil</title>
-        <link rel="icon" href="/icons/mobile-48.png" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css" rel="stylesheet" />
-        <link href="/css/style.css" rel="stylesheet" />
+      <Heading title={`Beranda | Mobid`} />
 
-        <link href="/_manifest.json" rel="manifest" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
-
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Mobid" />
-
-        <link rel="apple-touch-startup-image" sizes="640x1136" href="/splash/launch-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-        <link rel="apple-touch-startup-image" sizes="750x1294" href="/splash/launch-750x1294.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-        <link rel="apple-touch-startup-image" sizes="1242x2148" href="/splash/launch-1242x2148.png" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
-        <link rel="apple-touch-startup-image" sizes="1125x2436" href="/splash/launch-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
-        <link rel="apple-touch-startup-image" sizes="1536x2048" href="/splash/launch-1536x2048.png" media="(min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" />
-        <link rel="apple-touch-startup-image" sizes="1668x2224" href="/splash/launch-1668x2224.png" media="(min-device-width: 834px) and (max-device-width: 834px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" />
-        <link rel="apple-touch-startup-image" sizes="2048x2732" href="/splash/launch-2048x2732.png" media="(min-device-width: 1024px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)" />
-
-        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
-        <meta name="msapplication-TileColor" content="#00aba9" />
-        <meta name="theme-color" content="#ffffff" />
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-        <script src="/js/app.js"></script>
-      </Head>
-
-      <nav className="p-0 mobile navbar navbar-dark bg-primary navbar-expand fixed-bottom">
-        <ul className="navbar-nav nav-justified w-100">
-          <li className="nav-item">
-            <Link href="/">
-              <a className="nav-link text-center active">
-                <i className="bi bi-house" style={{fontSize: '1.2em'}}></i>
-                <span className="small d-block">Beranda</span>
-              </a>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/konsultasi">
-              <a className="nav-link text-center">
-                <i className="bi bi-gear" style={{fontSize: '1.2em'}}></i>
-                <span className="small d-block">Konsultasi</span>
-              </a>
-          </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/berita">
-              <a className="nav-link text-center">
-                <i className="bi bi-newspaper" style={{fontSize: '1.2em'}}></i>
-                <span className="small d-block">Berita</span>
-              </a>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/favorit">
-              <a className="nav-link text-center">
-                <i className="bi bi-heart" style={{fontSize: '1.2em'}}></i>
-                <span className="small d-block">Favorit</span>
-              </a>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/akun">
-              <a className="nav-link text-center">
-                <i className="bi bi-person" style={{fontSize: '1.2em'}}></i>
-                <span className="small d-block">Profil</span>
-              </a>
-            </Link>
-          </li>
-        </ul>
-      </nav>
+      <NavBottom isActive={asPath} />
 
       <div className="pb-5 mobile">
 
@@ -87,13 +31,13 @@ export default function Home() {
         </section>
 
         <section className="p-3">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" style={{borderTopRightRadius: '0px', borderBottomRightRadius: '0px'}}><i className="bi bi-geo-alt"></i></span>
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text" style={{borderTopRightRadius: '0px', borderBottomRightRadius: '0px'}}><i className="bi bi-geo-alt"></i></span>
             </div>
-            <input placeHolder="Jakarta" type="text" class="form-control" aria-label="Amount (to the nearest dollar)" />
-            <div class="input-group-append">
-              <span class="input-group-text" style={{borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px'}}><i className="bi bi-chevron-right"></i></span>
+            <input placeholder="Jakarta" type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+            <div className="input-group-append">
+              <span className="input-group-text" style={{borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px'}}><i className="bi bi-chevron-right"></i></span>
             </div>
           </div>
         </section>
@@ -102,24 +46,24 @@ export default function Home() {
 
         <section className="px-3 pt-3">
           <div className="scrolling-wrapper row flex-row flex-nowrap">
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Semua</span></div>
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Bengkel Mobil</span></div>
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Cuci Mobil</span></div>
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Pom Bensin</span></div>
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Cutting</span></div>
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Dealer</span></div>
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Velg</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Semua</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Bengkel Mobil</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Cuci Mobil</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Pom Bensin</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Cutting</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Dealer</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Velg</span></div>
           </div>
         </section>
 
         <section className="p-3">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" style={{borderTopRightRadius: '0px', borderBottomRightRadius: '0px'}}>
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text" style={{borderTopRightRadius: '0px', borderBottomRightRadius: '0px'}}>
                 <i className="bi bi-search"></i>
               </span>
             </div>
-            <input placeHolder="Cari..." type="text" class="form-control" aria-label="Amount (to the nearest dollar)" />
+            <input placeholder="Cari..." type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
           </div>
         </section>
 
@@ -127,85 +71,36 @@ export default function Home() {
 
         <section className="bg-white p-3">
 
-          <article class="card mb-3">
-            <div class="row g-0">
-              <div class="col-sm-5">
-                <div className="card card-block card-1"></div>
-              </div>
-              <div class="col-md-7">
-                <div class="card-body">
-                  <Link href="/detail">
-                    <h5 className="card-title">PT Bintraco Dharma Tbk</h5>
-                  </Link>
-                  <p class="card-text">Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.</p>
-                  <div className="rating">
-                    <i className="bi bi-star-fill"></i>
-                    <i className="bi bi-star-fill"></i>
-                    <i className="bi bi-star-half"></i>
-                    <i className="bi bi-star"></i>
-                    <i className="bi bi-star"></i>
+          {
+            nearMe.map((item, i) => (
+              <article className="card mb-3" key={`art-${i}`}>
+                <div className="row g-0">
+                  <div className="col-sm-5">
+                    <div className="card card-block card-1"></div>
                   </div>
-                  <p class="card-text">
-                    <strong>3.0 KM</strong>
-                    <i className="bi bi-heart float-end"></i>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article class="card mb-3">
-            <div class="row g-0">
-              <div class="col-sm-5">
-                <div className="card card-block card-1"></div>
-              </div>
-              <div class="col-md-7">
-                <div class="card-body">
-                  <Link href="/detail">
-                    <h5 className="card-title">PT Bintraco Dharma Tbk</h5>
-                  </Link>
-                  <p class="card-text">Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.</p>
-                  <div className="rating">
-                    <i className="bi bi-star-fill"></i>
-                    <i className="bi bi-star-fill"></i>
-                    <i className="bi bi-star-half"></i>
-                    <i className="bi bi-star"></i>
-                    <i className="bi bi-star"></i>
+                  <div className="col-md-7">
+                    <div className="card-body">
+                      <Link href="/detail">
+                        <h5 className="card-title cursor-pointer">{item.title}</h5>
+                      </Link>
+                      <p className="card-text">{item.address}</p>
+                      <div className="rating">
+                        {
+                          [1,2,3,4,5].map((row, key) => (
+                            <i className={`bi bi-star${key < item.rating ? '-fill' : ''}`}></i>
+                          ))
+                        }
+                      </div>
+                      <p className="card-text">
+                        <strong>{item.distance}</strong>
+                        <i className="bi bi-heart float-end"></i>
+                      </p>
+                    </div>
                   </div>
-                  <p class="card-text">
-                    <strong>3.0 KM</strong>
-                    <i className="bi bi-heart float-end"></i>
-                  </p>
                 </div>
-              </div>
-            </div>
-          </article>
-          <article class="card mb-3">
-            <div class="row g-0">
-              <div class="col-sm-5">
-                <div className="card card-block card-1"></div>
-              </div>
-              <div class="col-md-7">
-                <div class="card-body">
-                  <Link href="/detail">
-                    <h5 className="card-title">PT Bintraco Dharma Tbk</h5>
-                  </Link>
-                  <p class="card-text">Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.</p>
-                  <div className="rating">
-                    <i className="bi bi-star-fill"></i>
-                    <i className="bi bi-star-fill"></i>
-                    <i className="bi bi-star-half"></i>
-                    <i className="bi bi-star"></i>
-                    <i className="bi bi-star"></i>
-                  </div>
-                  <p class="card-text">
-                    <strong>3.0 KM</strong>
-                    <i className="bi bi-heart float-end"></i>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </article>
+              </article>
+            ))
+          }
 
         </section>
 
@@ -507,37 +402,7 @@ export default function Home() {
 
         <div className="divider"></div>
 
-        <footer className="bg-white p-3">
-          <div className="text-center">
-            <h6 className="p-3">PT Carsworld Digital Indonesia</h6>
-            <p>Mudah, cepat, dan informatif untuk keperluan Anda mencari bengkel atau salon mobil terdekat serta review terpercaya.</p>
-
-            {' '}<a className="text-decoration-none" href="#">Tentang</a>{' '}
-            |
-            {' '}<a className="text-decoration-none" href="#">Syarat & Ketentuan</a>{' '}
-            |
-            {' '}<a className="text-decoration-none" href="#">Bantuan</a>{' '}
-
-            <div className="my-2 py-2">
-              <Link href="/">
-                <i className="bi bi-youtube m-3"></i>
-              </Link>
-              <Link href="/">
-                <i className="bi bi-twitter m-3"></i>
-              </Link>
-              <Link href="/">
-                <i className="bi bi-instagram m-3"></i>
-              </Link>
-              <Link href="/">
-                <i className="bi bi-facebook m-3"></i>
-              </Link>
-            </div>
-
-            <hr />
-
-            <p>Copyright © 2021 Carsworld. All Right Reserved.</p>
-          </div>
-        </footer>
+        <Footer />
 
       </div>
 

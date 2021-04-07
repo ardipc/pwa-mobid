@@ -1,13 +1,19 @@
 import Link from 'next/link'
-import Head from 'next/head'
 import Image from 'next/image'
 
-import Router from 'next/router'
+import Heading from '../components/heading'
+import Footer from '../components/footer'
+import NavBottom from '../components/nav-bottom'
+
+import Router, { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
 export default function Cari() {
 
-  const [user, setUser] = useState({});
+  const router = useRouter()
+  const { asPath } = router
+
+  const [user, setUser] = useState({})
   const [load, setLoad] = useState(true)
 
   useEffect(() => {
@@ -23,68 +29,9 @@ export default function Cari() {
   return (
     <>
 
-      <Head>
-        <title>Template</title>
-        <link rel="icon" href="/favicon.ico" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css" rel="stylesheet" />
-        <link href="/css/style.css" rel="stylesheet" />
+      <Heading title={`Favorit | Mobid`} />
 
-        <link href="/_manifest.json" rel="manifest" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/app/icons/icon-192x192.png" />
-
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#000" />
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-        <script src="/js/app.js"></script>
-      </Head>
-
-      <nav className="p-0 mobile navbar navbar-dark bg-primary navbar-expand fixed-bottom">
-        <ul className="navbar-nav nav-justified w-100">
-          <li className="nav-item">
-            <Link href="/">
-              <a className="nav-link text-center">
-                <i className="bi bi-house" style={{fontSize: '1.2em'}}></i>
-                <span className="small d-block">Beranda</span>
-              </a>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/konsultasi">
-              <a className="nav-link text-center">
-                <i className="bi bi-gear" style={{fontSize: '1.2em'}}></i>
-                <span className="small d-block">Konsultasi</span>
-              </a>
-          </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/berita">
-              <a className="nav-link text-center">
-                <i className="bi bi-newspaper" style={{fontSize: '1.2em'}}></i>
-                <span className="small d-block">Berita</span>
-              </a>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/favorit">
-              <a className="nav-link text-center active">
-                <i className="bi bi-heart" style={{fontSize: '1.2em'}}></i>
-                <span className="small d-block">Favorit</span>
-              </a>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/akun">
-              <a className="nav-link text-center">
-                <i className="bi bi-person" style={{fontSize: '1.2em'}}></i>
-                <span className="small d-block">Profil</span>
-              </a>
-            </Link>
-          </li>
-        </ul>
-      </nav>
+      <NavBottom isActive={asPath} />
 
       <div className="pb-5 mobile">
 
@@ -94,24 +41,24 @@ export default function Cari() {
 
         <section className="px-3 pt-3">
           <div className="scrolling-wrapper row flex-row flex-nowrap">
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Semua</span></div>
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Bengkel Mobil</span></div>
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Cuci Mobil</span></div>
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Pom Bensin</span></div>
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Cutting</span></div>
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Dealer</span></div>
-            <div className="col px-0"><span class="badge bg-primary p-2 mx-1">Velg</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Semua</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Bengkel Mobil</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Cuci Mobil</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Pom Bensin</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Cutting</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Dealer</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Velg</span></div>
           </div>
         </section>
 
         <section className="p-3">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text" style={{borderTopRightRadius: '0px', borderBottomRightRadius: '0px'}}>
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text" style={{borderTopRightRadius: '0px', borderBottomRightRadius: '0px'}}>
                 <i className="bi bi-search"></i>
               </span>
             </div>
-            <input placeHolder="Cari..." type="text" class="form-control" aria-label="Amount (to the nearest dollar)" />
+            <input placeholder="Cari..." type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
           </div>
         </section>
 
@@ -119,17 +66,17 @@ export default function Cari() {
 
         <section className="bg-white p-3">
 
-          <article class="card mb-3">
-            <div class="row g-0">
-              <div class="col-sm-5">
+          <article className="card mb-3">
+            <div className="row g-0">
+              <div className="col-sm-5">
                 <div className="card card-block card-1"></div>
               </div>
-              <div class="col-md-7">
-                <div class="card-body">
+              <div className="col-md-7">
+                <div className="card-body">
                   <Link href="/detail">
                     <h5 className="card-title">PT Bintraco Dharma Tbk</h5>
                   </Link>
-                  <p class="card-text">Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.</p>
+                  <p className="card-text">Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.</p>
                   <div className="rating">
                     <i className="bi bi-star-fill"></i>
                     <i className="bi bi-star-fill"></i>
@@ -137,7 +84,7 @@ export default function Cari() {
                     <i className="bi bi-star"></i>
                     <i className="bi bi-star"></i>
                   </div>
-                  <p class="card-text">
+                  <p className="card-text">
                     <strong>3.0 KM</strong>
                     <i className="bi bi-heart-fill float-end"></i>
                   </p>
@@ -146,17 +93,17 @@ export default function Cari() {
             </div>
           </article>
 
-          <article class="card mb-3">
-            <div class="row g-0">
-              <div class="col-sm-5">
+          <article className="card mb-3">
+            <div className="row g-0">
+              <div className="col-sm-5">
                 <div className="card card-block card-1"></div>
               </div>
-              <div class="col-md-7">
-                <div class="card-body">
+              <div className="col-md-7">
+                <div className="card-body">
                   <Link href="/detail">
                     <h5 className="card-title">PT Bintraco Dharma Tbk</h5>
                   </Link>
-                  <p class="card-text">Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.</p>
+                  <p className="card-text">Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.</p>
                   <div className="rating">
                     <i className="bi bi-star-fill"></i>
                     <i className="bi bi-star-fill"></i>
@@ -164,7 +111,7 @@ export default function Cari() {
                     <i className="bi bi-star"></i>
                     <i className="bi bi-star"></i>
                   </div>
-                  <p class="card-text">
+                  <p className="card-text">
                     <strong>3.0 KM</strong>
                     <i className="bi bi-heart-fill float-end"></i>
                   </p>
@@ -177,37 +124,7 @@ export default function Cari() {
 
         <div className="divider"></div>
 
-        <footer className="bg-white p-3">
-          <div className="text-center">
-            <h6 className="p-3">PT Carsworld Digital Indonesia</h6>
-            <p>Mudah, cepat, dan informatif untuk keperluan Anda mencari bengkel atau salon mobil terdekat serta review terpercaya.</p>
-
-            {' '}<a className="text-decoration-none" href="#">Tentang</a>{' '}
-            |
-            {' '}<a className="text-decoration-none" href="#">Syarat & Ketentuan</a>{' '}
-            |
-            {' '}<a className="text-decoration-none" href="#">Bantuan</a>{' '}
-
-            <div className="my-2 py-2">
-              <Link href="/">
-                <i className="bi bi-youtube m-3"></i>
-              </Link>
-              <Link href="/">
-                <i className="bi bi-twitter m-3"></i>
-              </Link>
-              <Link href="/">
-                <i className="bi bi-instagram m-3"></i>
-              </Link>
-              <Link href="/">
-                <i className="bi bi-facebook m-3"></i>
-              </Link>
-            </div>
-
-            <hr />
-
-            <p>Copyright © 2021 Carsworld. All Right Reserved.</p>
-          </div>
-        </footer>
+        <Footer />
 
       </div>
 
