@@ -4,18 +4,54 @@ import Heading from '../components/heading'
 import Footer from '../components/footer'
 import NavBottom from '../components/nav-bottom'
 
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+
+import { API_KATEGORI, API_MERCHANT, API_KONSULTASI } from '../configs/rest'
+import axios from 'axios'
+
 
 export default function Home() {
 
-  const nearMe = [
-    {id: 1, title: 'PT Bintraco Dharma Tbk', address: 'Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.', rating: 4, distance: '3.0 KM'},
-    {id: 2, title: 'PT MPM Rental Motor', address: 'Sunburst, CBD Lot II, Jl. Kapten Soebijanto Djojohadikusumo No.10, Lengkong Gudang.', rating: 3, distance: '4.0 KM'},
-    {id: 3, title: 'Sewa Mobil BSD', address: 'Ruko Malibu, Jl Pahlawan Seribu, BSD Tangerang Selatan, Lengkong Gudang.', rating: 3, distance: '10.0 KM'}
-  ]
+  const [kategori, setKategori] = useState([])
+  const [merchant, setMerchant] = useState([])
+  const [konsultasi, setKonsultasi] = useState([])
 
   const router = useRouter()
   const { asPath } = router
+
+  const fetchKategori = () => {
+    axios.get(API_KATEGORI).then(res => {
+      if(res.status === 200) {
+        const { result } = res.data
+        setKategori(result)
+      }
+    })
+  }
+
+  const fetchMerchant = () => {
+    axios.post(API_MERCHANT).then(res => {
+      if(res.status === 200) {
+        const { result } = res.data
+        setMerchant(result)
+      }
+    })
+  }
+
+  const fetchKonsultasi = () => {
+    axios.post(API_KONSULTASI).then(res => {
+      if(res.status === 200) {
+        const { result } = res.data
+        setKonsultasi(result)
+      }
+    })
+  }
+
+  useEffect(() => {
+    fetchKategori()
+    fetchMerchant()
+    fetchKonsultasi()
+  }, [])
 
   return (
     <>
@@ -46,13 +82,12 @@ export default function Home() {
 
         <section className="px-3 pt-3">
           <div className="scrolling-wrapper row flex-row flex-nowrap">
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Semua</span></div>
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Bengkel Mobil</span></div>
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Cuci Mobil</span></div>
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Pom Bensin</span></div>
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Cutting</span></div>
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Dealer</span></div>
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Velg</span></div>
+            <div className="col px-0"><span className="badge bg-primary p-2 mx-1 cursor-pointer">Semua</span></div>
+            {
+              kategori.map((item, i) => (
+                <div key={`kat-${i}`} className="col px-0"><span className="badge bg-primary p-2 mx-1 cursor-pointer">{item.name}</span></div>
+              ))
+            }
           </div>
         </section>
 
@@ -72,27 +107,27 @@ export default function Home() {
         <section className="bg-white p-3">
 
           {
-            nearMe.map((item, i) => (
+            merchant.map((item, i) => (
               <article className="card mb-3" key={`art-${i}`}>
                 <div className="row g-0">
                   <div className="col-sm-5">
-                    <div className="card card-block card-1"></div>
+                    <div className="card card-block card-1 responsive" style={{backgroundImage: `url('${item.imageUrl}')`}}></div>
                   </div>
                   <div className="col-md-7">
                     <div className="card-body">
-                      <Link href="/detail">
-                        <h5 className="card-title cursor-pointer">{item.title}</h5>
+                      <Link href={`/detail?id=${item.id}`}>
+                        <h5 className="card-title cursor-pointer">{item.name}</h5>
                       </Link>
-                      <p className="card-text">{item.address}</p>
-                      <div className="rating">
+                      <p className="card-text">{item.alamatLengkap}</p>
+                      <div className="rating mb-1">
                         {
                           [1,2,3,4,5].map((row, key) => (
-                            <i className={`bi bi-star${key < item.rating ? '-fill' : ''}`}></i>
+                            <i key={`rat-${key}`} style={{color: '#ffc107'}} className={`mx-1 bi bi-star${key < Math.floor(item.rating) ? '-fill' : ''}`}></i>
                           ))
                         }
                       </div>
                       <p className="card-text">
-                        <strong>{item.distance}</strong>
+                        <strong>{item.kota}</strong>
                         <i className="bi bi-heart float-end cursor-pointer"></i>
                       </p>
                     </div>
@@ -107,103 +142,22 @@ export default function Home() {
         <div className="divider"></div>
 
         <section className="bg-white p-3">
-          <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel" style={{borderRadius: '12px'}}>
-            <div className="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-            <div className="carousel-inner" style={{borderRadius: '12px'}}>
-              <div className="carousel-item active" style={{borderRadius: '12px'}}>
-                <div className="card card-carousel card-1"></div>
-                <div className="carousel-caption d-none d-md-block">
-                  <h5>First slide label</h5>
-                  <p>Some representative placeholder content for the first slide.</p>
+          <p className="h6 mb-3">Cek Mobil Kamu</p>
+
+          <div className="row text-center">
+            {
+              konsultasi.map((item, i) => (
+                <div className="my-2 square-80">
+                  <Link href="/">
+                    <a className="text-center text-decoration-none">
+                      <img src={item.icon} className="square-50" />
+                      <span className="small d-block">{item.nama}</span>
+                    </a>
+                  </Link>
                 </div>
-              </div>
-              <div className="carousel-item" style={{borderRadius: '12px'}}>
-                <div className="card card-carousel card-1"></div>
-                <div className="carousel-caption d-none d-md-block">
-                  <h5>Second slide label</h5>
-                  <p>Some representative placeholder content for the second slide.</p>
-                </div>
-              </div>
-              <div className="carousel-item" style={{borderRadius: '12px'}}>
-                <div className="card card-carousel card-1"></div>
-                <div className="carousel-caption d-none d-md-block">
-                  <h5>Third slide label</h5>
-                  <p>Some representative placeholder content for the third slide.</p>
-                </div>
-              </div>
-            </div>
-            <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span className="visually-hidden">Previous</span>
-            </button>
-            <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-              <span className="carousel-control-next-icon" aria-hidden="true"></span>
-              <span className="visually-hidden">Next</span>
-            </button>
+              ))
+            }
           </div>
-        </section>
-
-        <div className="divider"></div>
-
-        <section className="bg-white p-3">
-          <div className="scrolling-wrapper row flex-row flex-nowrap">
-      			<div className="col-12">
-      				<div className="card card-block card-1"></div>
-      			</div>
-      			<div className="col-12">
-      				<div className="card card-block card-1"></div>
-      			</div>
-      			<div className="col-12">
-      				<div className="card card-block card-1"></div>
-      			</div>
-      			<div className="col-12">
-      				<div className="card card-block card-1"></div>
-      			</div>
-      			<div className="col-12">
-      				<div className="card card-block card-1"></div>
-      			</div>
-    			</div>
-
-          <nav className="p-0 mobile navbar navbar-light navbar-expand mt-2 mb-2">
-            <ul className="navbar-nav nav-justified w-100">
-              <li className="nav-item">
-                <Link href="/">
-                  <a className="nav-link text-center">
-                    <i className="bi bi-house" style={{fontSize: '1.2em'}}></i>
-                    <span className="small d-block">Home</span>
-                  </a>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link href="/cari">
-                  <a className="nav-link text-center">
-                    <i className="bi bi-briefcase" style={{fontSize: '1.2em'}}></i>
-                    <span className="small d-block">Cari</span>
-                  </a>
-              </Link>
-              </li>
-              <li className="nav-item">
-                <Link href="/galang">
-                  <a className="nav-link text-center">
-                    <i className="bi bi-award" style={{fontSize: '1.2em'}}></i>
-                    <span className="small d-block">Berita</span>
-                  </a>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link href="/pesan">
-                  <a className="nav-link text-center">
-                    <i className="bi bi-basket" style={{fontSize: '1.2em'}}></i>
-                    <span className="small d-block">Pesan</span>
-                  </a>
-                </Link>
-              </li>
-            </ul>
-          </nav>
 
         </section>
 

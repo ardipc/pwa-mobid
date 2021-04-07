@@ -4,11 +4,35 @@ import Image from 'next/image'
 import Heading from '../components/heading'
 import Footer from '../components/footer'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+
+import { API_MERCHANT } from '../configs/rest'
+import axios from 'axios'
 
 export default function Detail() {
 
-  const [img, setImg] = useState('primary')
+  const router = useRouter()
+  const { id } = router.query
+
+  const [img, setImg] = useState('info')
+  const [detail, setDetail] = useState({})
+
+  const fetchDetailMerchant = (id) => {
+    axios.post(`${API_MERCHANT}/${id}`).then(res => {
+      if(res.status === 200) {
+        const { result } = res.data
+        setDetail(result)
+        setImg(result.imageUrl)
+      }
+    })
+  }
+
+  useEffect(() => {
+    if(id) {
+      fetchDetailMerchant(id)
+    }
+  }, [id])
 
   return (
     <>
@@ -25,46 +49,61 @@ export default function Detail() {
               </Link>
               <i className="bi bi-heart favorit-top cursor-pointer"></i>
               <i className="bi bi-share share-top cursor-pointer"></i>
-              <div className={`bg-${img}`} style={{width: '100%', height: '300px', marginTop: '-24px'}}></div>
+              <div className={`bg-info responsive`} style={{width: '100%', height: '300px', marginTop: '-24px', backgroundImage: `url('${img}')`}}></div>
             </div>
 
             <div className="p-3">
               <div className="preview mb-2">
                 <div className="scrolling-wrapper row flex-row flex-nowrap">
-                  <div className="col"><div onClick={e => setImg('primary')} className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div onClick={e => setImg('secondary')} className="bg-secondary rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div onClick={e => setImg('success')} className="bg-success rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div onClick={e => setImg('warning')} className="bg-warning rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div onClick={e => setImg('info')} className="bg-info rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div onClick={e => setImg('dark')} className="bg-dark rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col">
+                    <div
+                      className="bg-info rounded responsive cursor-pointer"
+                      onClick={e => setImg(detail.imageUrl)}
+                      style={{width: '80px', height: '80px', backgroundImage: `url('${detail.imageUrl}')`}}
+                      ></div>
+                  </div>
+                  {
+                    detail.hasOwnProperty('images') && detail.images.map((item, i) => (
+                      <div className="col" key={`img-${i}`}>
+                        <div
+                          className="bg-info rounded responsive"
+                          onClick={e => setImg(item)}
+                          style={{width: '80px', height: '80px', backgroundImage: `url('${item}')`}}
+                          ></div>
+                      </div>
+                    ))
+                  }
                 </div>
               </div>
 
               <h5 style={{ fontSize: '18px' }}>
-                 PT Bintraco Dharma Tbk.
+                 {detail.name}
               </h5>
 
               <div className="rating">
-                <i className="bi bi-star-fill"></i>
-                <i className="bi bi-star-fill"></i>
-                <i className="bi bi-star-fill"></i>
-                <i className="bi bi-star-fill"></i>
-                <i className="bi bi-star"></i>
+                {
+                  [1,2,3,4,5].map((row, key) => (
+                    <i style={{color: '#ffc107'}} className={`mx-1 bi bi-star${key < Math.floor(detail.rating) ? '-fill' : ''}`}></i>
+                  ))
+                }
               </div>
 
               <div className="mb-2 mt-3">
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item">
-                    <i className="bi bi-calendar-check"></i> Senin-Jumat
+                    <i className="bi bi-geo"></i> {detail.kota}
+                  </li>
+                  {
+                    detail.hasOwnProperty('openOperation') && detail.hasOwnProperty('closeOperation') &&
+                    <li className="list-group-item">
+                      <i className="bi bi-clock"></i> {detail.openOperation.substring(0,5)} - {detail.closeOperation.substring(0,5)}
+                    </li>
+                  }
+                  <li className="list-group-item">
+                    <i className="bi bi-geo-alt"></i> {detail.alamatLengkap}
                   </li>
                   <li className="list-group-item">
-                    <i className="bi bi-clock"></i> 08:00 - 16:00
-                  </li>
-                  <li className="list-group-item">
-                    <i className="bi bi-geo-alt"></i> Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang, Serpong Sub-District, South Tangerang City, Banten 15321, Indonesia
-                  </li>
-                  <li className="list-group-item">
-                    <i className="bi bi-chat-text"></i> 24 Reviews
+                    <div dangerouslySetInnerHTML={{ __html: detail.deskripsi }} />
                   </li>
                 </ul>
               </div>
@@ -90,7 +129,7 @@ export default function Detail() {
                 </div>
                 <div className="col">
                   <div className="d-grid gap-2">
-                    <a href="https://goo.gl/maps/Y25pbHX3sKFtLqEm8" target="_blank">
+                    <a href={`https://maps.google.com/?q=${detail.latitude},${detail.longitude}`} target="_blank">
                       <button className="btn btn-outline-primary">
                         <i className="bi bi-box-arrow-up-right"></i> Petunjuk
                       </button>
