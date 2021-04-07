@@ -3,14 +3,14 @@
   "comment": "Mobid",
   "lang" : "id",
   "name" : "Mobid",
-  "scope" : "https://mobid.vercel.app/",
+  "scope" : ".",
   "display" : "fullscreen",
-  "start_url" : "https://mobid.vercel.app/",
+  "start_url" : "/",
   "short_name" : "Mobid",
   "description" : "Apps Mobid",
   "orientation" : "portrait",
-  "background_color": "#000000",
-  "theme_color": "#0b53be",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "generated" : "true",
   "icons": [
     {

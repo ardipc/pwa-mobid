@@ -2,7 +2,12 @@ import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
 
+import { useState } from 'react'
+
 export default function Baca() {
+
+  const [img, setImg] = useState('primary')
+
   return (
     <>
 
@@ -34,18 +39,20 @@ export default function Baca() {
               </Link>
               <i className="bi bi-heart favorit-top"></i>
               <i className="bi bi-share share-top"></i>
-              <div className="bg-primary" style={{width: '100%', height: '300px', marginTop: '-24px'}}></div>
+
+              <div className={`bg-${img}`} style={{width: '100%', height: '300px', marginTop: '-24px'}}></div>
+
             </div>
 
             <div className="p-3">
               <div className="preview mb-2">
                 <div className="scrolling-wrapper row flex-row flex-nowrap">
-                  <div className="col"><div className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col"><div onClick={e => setImg('primary')} className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col"><div onClick={e => setImg('secondary')} className="bg-secondary rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col"><div onClick={e => setImg('success')} className="bg-success rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col"><div onClick={e => setImg('warning')} className="bg-warning rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col"><div onClick={e => setImg('info')} className="bg-info rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col"><div onClick={e => setImg('dark')} className="bg-dark rounded" style={{width: '80px', height: '80px'}}></div></div>
                 </div>
               </div>
 

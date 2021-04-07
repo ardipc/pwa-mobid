@@ -2,7 +2,12 @@ import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
 
+import { useState } from 'react'
+
 export default function Detail() {
+
+  const [img, setImg] = useState('primary')
+
   return (
     <>
 
@@ -34,18 +39,18 @@ export default function Detail() {
               </Link>
               <i className="bi bi-heart favorit-top"></i>
               <i className="bi bi-share share-top"></i>
-              <div className="bg-primary" style={{width: '100%', height: '300px', marginTop: '-24px'}}></div>
+              <div className={`bg-${img}`} style={{width: '100%', height: '300px', marginTop: '-24px'}}></div>
             </div>
 
             <div className="p-3">
               <div className="preview mb-2">
                 <div className="scrolling-wrapper row flex-row flex-nowrap">
-                  <div className="col"><div className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
-                  <div className="col"><div className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col"><div onClick={e => setImg('primary')} className="bg-primary rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col"><div onClick={e => setImg('secondary')} className="bg-secondary rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col"><div onClick={e => setImg('success')} className="bg-success rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col"><div onClick={e => setImg('warning')} className="bg-warning rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col"><div onClick={e => setImg('info')} className="bg-info rounded" style={{width: '80px', height: '80px'}}></div></div>
+                  <div className="col"><div onClick={e => setImg('dark')} className="bg-dark rounded" style={{width: '80px', height: '80px'}}></div></div>
                 </div>
               </div>
 
@@ -81,23 +86,29 @@ export default function Detail() {
               <div className="action row text-center">
                 <div className="col">
                   <div class="d-grid gap-2">
-                    <button className="btn btn-outline-primary">
-                      <i className="bi bi-telephone"></i> Telepon
-                    </button>
+                    <a href="tel:+6282334093822" target="_blank">
+                      <button className="btn btn-outline-primary">
+                        <i className="bi bi-telephone"></i> Telepon
+                      </button>
+                    </a>
                   </div>
                 </div>
                 <div className="col">
                   <div class="d-grid gap-2">
-                    <button className="btn btn-outline-primary">
-                      <i className="bi bi-whatsapp"></i> Whatsapp
-                    </button>
+                    <a href="https://wa.me/6282334093822/?text=Tanya%20Dong." target="_blank">
+                      <button className="btn btn-outline-primary">
+                        <i className="bi bi-whatsapp"></i> Whatsapp
+                      </button>
+                    </a>
                   </div>
                 </div>
                 <div className="col">
                   <div class="d-grid gap-2">
-                    <button className="btn btn-outline-primary">
-                      <i className="bi bi-box-arrow-up-right"></i> Petunjuk
-                    </button>
+                    <a href="https://goo.gl/maps/Y25pbHX3sKFtLqEm8" target="_blank">
+                      <button className="btn btn-outline-primary">
+                        <i className="bi bi-box-arrow-up-right"></i> Petunjuk
+                      </button>
+                    </a>
                   </div>
                 </div>
               </div>
