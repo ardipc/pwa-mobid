@@ -24,9 +24,15 @@ export default function Favorit() {
   const [merchant, setMerchant] = useState([])
 
   useEffect(async () => {
-    const parse = JSON.parse(localStorage.getItem('session'))
-    const rows = await getMyFavorit(parse.token)
-    setMerchant(rows)
+    const session = localStorage.getItem('session');
+    if(session) {
+      const parse = JSON.parse(localStorage.getItem('session'))
+      const rows = await getMyFavorit(parse.token)
+      setMerchant(rows)
+    }
+    else {
+      Router.push('/login');
+    }
   }, [merchant])
 
   return (
