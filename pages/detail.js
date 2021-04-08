@@ -10,13 +10,20 @@ import { useRouter } from 'next/router'
 import { API_MERCHANT } from '../configs/rest'
 import axios from 'axios'
 
+export async function getStaticProps(context) {
+  console.log(context)
+  return {
+    props: {}, // will be passed to the page component as props
+  }
+}
+
 export default function Detail() {
 
   const router = useRouter()
   const { id } = router.query
 
-  const [img, setImg] = useState('info')
-  const [detail, setDetail] = useState({})
+  const [img, setImg] = useState()
+  const [detail, setDetail] = useState()
 
   const fetchDetailMerchant = (id) => {
     axios.post(`${API_MERCHANT}/${id}`).then(res => {
@@ -29,7 +36,7 @@ export default function Detail() {
   }
 
   useEffect(() => {
-    if(id) {
+    if(id && !detail && !img) {
       fetchDetailMerchant(id)
     }
   }, [id])
@@ -49,21 +56,29 @@ export default function Detail() {
               </Link>
               <i className="bi bi-heart favorit-top cursor-pointer"></i>
               <i className="bi bi-share share-top cursor-pointer"></i>
-              <div className={`bg-info responsive`} style={{width: '100%', height: '300px', marginTop: '-24px', backgroundImage: `url('${img}')`}}></div>
+              {
+                img ?
+                <div className={`bg-info responsive`} style={{width: '100%', height: '300px', marginTop: '-24px', backgroundImage: `url('${img}')`}}></div>
+                : null
+              }
             </div>
 
             <div className="p-3">
               <div className="preview mb-2">
                 <div className="scrolling-wrapper row flex-row flex-nowrap">
                   <div className="col">
-                    <div
-                      className="bg-info rounded responsive cursor-pointer"
-                      onClick={e => setImg(detail.imageUrl)}
-                      style={{width: '80px', height: '80px', backgroundImage: `url('${detail.imageUrl}')`}}
-                      ></div>
+                    {
+                      detail ?
+                      <div
+                        className="bg-info rounded responsive cursor-pointer"
+                        onClick={e => setImg(detail.imageUrl)}
+                        style={{width: '80px', height: '80px', backgroundImage: `url('${detail.imageUrl}')`}}
+                        ></div>
+                      : null
+                    }
                   </div>
                   {
-                    detail.hasOwnProperty('images') && detail.images.map((item, i) => (
+                    detail && detail.hasOwnProperty('images') && detail.images.map((item, i) => (
                       <div className="col" key={`img-${i}`}>
                         <div
                           className="bg-info rounded responsive"
@@ -77,12 +92,12 @@ export default function Detail() {
               </div>
 
               <h5 style={{ fontSize: '18px' }}>
-                 {detail.name}
+                 {detail ? detail.name : null}
               </h5>
 
               <div className="rating">
                 {
-                  [1,2,3,4,5].map((row, key) => (
+                  detail && [1,2,3,4,5].map((row, key) => (
                     <i style={{color: '#ffc107'}} className={`mx-1 bi bi-star${key < Math.floor(detail.rating) ? '-fill' : ''}`}></i>
                   ))
                 }
@@ -91,19 +106,19 @@ export default function Detail() {
               <div className="mb-2 mt-3">
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item">
-                    <i className="bi bi-geo"></i> {detail.kota}
+                    <i className="bi bi-geo"></i> {detail ? detail.kota : null}
                   </li>
                   {
-                    detail.hasOwnProperty('openOperation') && detail.hasOwnProperty('closeOperation') &&
+                    detail && detail.hasOwnProperty('openOperation') && detail.hasOwnProperty('closeOperation') &&
                     <li className="list-group-item">
                       <i className="bi bi-clock"></i> {detail.openOperation.substring(0,5)} - {detail.closeOperation.substring(0,5)}
                     </li>
                   }
                   <li className="list-group-item">
-                    <i className="bi bi-geo-alt"></i> {detail.alamatLengkap}
+                    <i className="bi bi-geo-alt"></i> {detail ? detail.alamatLengkap : null}
                   </li>
                   <li className="list-group-item">
-                    <div dangerouslySetInnerHTML={{ __html: detail.deskripsi }} />
+                    <div dangerouslySetInnerHTML={{ __html: detail ? detail.deskripsi : null }} />
                   </li>
                 </ul>
               </div>
@@ -129,11 +144,15 @@ export default function Detail() {
                 </div>
                 <div className="col">
                   <div className="d-grid gap-2">
-                    <a href={`https://maps.google.com/?q=${detail.latitude},${detail.longitude}`} target="_blank">
-                      <button className="btn btn-outline-primary">
-                        <i className="bi bi-box-arrow-up-right"></i> Petunjuk
-                      </button>
-                    </a>
+                    {
+                      detail ?
+                      <a href={`https://maps.google.com/?q=${detail.latitude},${detail.longitude}`} target="_blank">
+                        <button className="btn btn-outline-primary">
+                          <i className="bi bi-box-arrow-up-right"></i> Petunjuk
+                          </button>
+                        </a>
+                        : null
+                    }
                   </div>
                 </div>
               </div>

@@ -4,6 +4,8 @@ import Head from 'next/head'
 import { Modal, Button, Spinner } from 'react-bootstrap'
 
 import { useState, useEffect } from 'react'
+
+import { API_GET_PROFILE } from '../configs/rest'
 import axios from 'axios'
 
 import Router, { useRouter } from 'next/router'
@@ -26,13 +28,14 @@ export default function Akun() {
       const author = JSON.parse(session).token;
       const configs = {
         headers: {
-          Authorization: author
+          'X-ACCESS-TOKEN': author
         }
       };
 
-      axios.get(`https://api.github.com/orgs/axios`, configs).then(res => {
+      axios.get(API_GET_PROFILE, configs).then(res => {
         if(res.status === 200) {
-          setUser(res.data);
+          const { result } = res.data
+          setUser(result);
           setLoad(false);
         }
       });
@@ -77,16 +80,21 @@ export default function Akun() {
 
           		<a title="Mert S. Kaplan" href="#" className="twPc-avatarLink">
                 {
-                  load ? <div style={{width: '72px', height: '72px'}} className="text-center"><Spinner style={{position: 'relative', top: '30%'}} animation="grow" /></div> : <img alt="Ahmad Ardiansyah" src={user.avatar_url} className="twPc-avatarImg" />
+                  load ?
+                    <div style={{width: '72px', height: '72px'}} className="text-center">
+                      <Spinner style={{position: 'relative', top: '30%'}} animation="grow" />
+                    </div>
+                  :
+                    <img alt={user.fullname} src={user.image_url} className="twPc-avatarImg" />
                 }
           		</a>
 
           		<div className="twPc-divUser">
           			<div className="twPc-divName">
-          				<a className="text-decoration-none" href="#">Ahmad Ardiansyah</a>
+          				<a className="text-decoration-none" href="#">{user.fullname}</a>
           			</div>
           			<span>
-          				<a className="text-decoration-none fc-success" href="#">@<span>ardipc</span></a>
+          				<a className="text-decoration-none fc-success" href="#"><span>{user.email}</span></a>
           			</span>
           		</div>
 
@@ -126,28 +134,28 @@ export default function Akun() {
             <div className="mb-3">
               <div className="input-group input-group-sm">
                 <span className="input-group-text"><i className="bi bi-person"></i></span>
-                <input type="text" className="form-control" placeholder="Nama" aria-label="Nama" aria-describedby="basic-addon1" />
+                <input value={user.fullname} type="text" className="form-control" placeholder="Nama" aria-label="Nama" aria-describedby="basic-addon1" />
               </div>
               <div className="form-text">Nama kamu siapa nih.</div>
             </div>
             <div className="mb-3">
               <div className="input-group input-group-sm">
                 <span className="input-group-text"><i className="bi bi-envelope"></i></span>
-                <input type="email" className="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" />
+                <input value={user.email} type="email" className="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" />
               </div>
               <div className="form-text">Alamat email kamu.</div>
             </div>
             <div className="mb-3">
               <div className="input-group input-group-sm">
                 <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
-                <input type="text" className="form-control" placeholder="Alamat" aria-label="Alamat" aria-describedby="basic-addon1" />
+                <input value={user.address} type="text" className="form-control" placeholder="Alamat" aria-label="Alamat" aria-describedby="basic-addon1" />
               </div>
               <div className="form-text">Kamu tinggal dimana.</div>
             </div>
             <div className="mb-3">
               <div className="input-group input-group-sm">
                 <span className="input-group-text"><i className="bi bi-telephone"></i></span>
-                <input type="number" className="form-control" placeholder="Telepon" aria-label="Telepon" aria-describedby="basic-addon1" />
+                <input value={user.phone} type="number" className="form-control" placeholder="Telepon" aria-label="Telepon" aria-describedby="basic-addon1" />
               </div>
               <div className="form-text">Nomor telepon kamu.</div>
             </div>

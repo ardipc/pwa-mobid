@@ -115,7 +115,7 @@ export default function Home() {
                   </div>
                   <div className="col-md-7">
                     <div className="card-body">
-                      <Link href={`/detail?id=${item.id}`}>
+                      <Link href={`/details/${item.id}`}>
                         <h5 className="card-title cursor-pointer">{item.name}</h5>
                       </Link>
                       <p className="card-text">{item.alamatLengkap}</p>
