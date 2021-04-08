@@ -5,7 +5,7 @@ const menus = [
   {id: 2, title: 'Konsultasi', icon: 'bi-gear', link: '/konsultasi'},
   {id: 3, title: 'Berita', icon: 'bi-newspaper', link: '/berita'},
   {id: 4, title: 'Favorit', icon: 'bi-heart', link: '/favorit'},
-  {id: 5, title: 'Beranda', icon: 'bi-person', link: '/akun'},
+  {id: 5, title: 'Profil', icon: 'bi-person', link: '/akun'},
 ];
 
 export default function NavBottom(props) {

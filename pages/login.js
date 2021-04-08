@@ -7,12 +7,46 @@ import Footer from '../components/footer'
 import Router from 'next/router'
 import { useState } from 'react'
 
-export default function Cari() {
-  const [user, setUser] = useState('')
+import { Modal } from 'react-bootstrap'
 
-  const btnLogin = (e) => {
-    localStorage.setItem('session', JSON.stringify({token: user}))
-    Router.push('/')
+import {
+  userOTPRequest,
+  userOTPValidate
+} from '../configs/api'
+
+export default function Login() {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [user, setUser] = useState('')
+  const [otp, setOtp] = useState('')
+  const [msg, setMsg] = useState('')
+
+  const btnLogin = async (e) => {
+    if(user) {
+      const req = await userOTPRequest(user)
+      setShow(true)
+    }
+    else {
+      console.log('Nomor kosong')
+    }
+  }
+
+  const btnValidasi = async (e) => {
+    if(otp) {
+      const req = await userOTPValidate(user, otp)
+      if(req.success){
+        localStorage.setItem('session', JSON.stringify({token: req.metadata}))
+        Router.push('/')
+      } else {
+        setMsg(req.message)
+        setOtp('')
+      }
+    }
+    else {
+      console.log('OTP kosong')
+    }
   }
 
   return (
@@ -38,7 +72,7 @@ export default function Cari() {
           </h5>
 
           <div className="my-4">
-            <label htmlFor="nomor" className="form-label">Nomor atau Email</label>
+            <label htmlFor="nomor" className="form-label">Nomor HP Kamu</label>
             <input onChange={e => setUser(e.target.value)} value={user} type="text" className="form-control form-control-sm" placeholder="Masukan nomor atau email" />
           </div>
 
@@ -49,6 +83,25 @@ export default function Cari() {
 
             <p>Belum punya akun? <Link href="/daftar"><a className="text-decoration-none">Daftar</a></Link></p>
           </div>
+
+          <Modal show={show} onHide={handleClose} centered>
+            <Modal.Body>
+              <h6>Masukkan kodenya, ya!</h6>
+              <p>Masukkan kode verifikasi yang kami kirimkan ke nomor Kamu.</p>
+
+              <div className="input-group">
+                <input onChange={e => setOtp(e.target.value)} value={otp} placeholder="xxxx" type="text" className="form-control" aria-label="OTP" />
+              </div>
+
+              <div className="d-grid gap-2 mt-4">
+                <button onClick={btnValidasi} className="btn btn-primary">Verifikasi</button>
+              </div>
+
+              {
+                msg ? <div className="text-center mt-4"><p className="text-danger">{msg}</p></div> : null
+              }
+            </Modal.Body>
+          </Modal>
 
         </section>
 

@@ -206,19 +206,19 @@ export default function Akun() {
 
         <section className="bg-white p-2">
           <ul className="list-group list-group-flush">
-            <li className="list-group-item p-3">
+            <li className="list-group-item p-3 cursor-pointer">
               <i className="bi bi-question-square"></i> Bantuan
             </li>
-            <li className="list-group-item p-3">
+            <li className="list-group-item p-3 cursor-pointer">
               <i className="bi bi-building"></i> Tentang Kami
             </li>
-            <li className="list-group-item p-3">
+            <li className="list-group-item p-3 cursor-pointer">
               <i className="bi bi-shield-check"></i> Syarat dan Ketentuan
             </li>
-            <li className="list-group-item p-3">
+            <li className="list-group-item p-3 cursor-pointer">
               <i className="bi bi-chat-dots"></i> Tanya Jawab
             </li>
-            <li onClick={btnLogout} className="list-group-item p-3">
+            <li onClick={btnLogout} className="list-group-item p-3 cursor-pointer">
               <i className="bi bi-box-arrow-right"></i> Keluar
             </li>
           </ul>

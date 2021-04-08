@@ -8,23 +8,26 @@ import NavBottom from '../components/nav-bottom'
 import Router, { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
-export default function Cari() {
+import Explore from '../components/explore'
+
+import {
+  getMyFavorit
+} from '../configs/api'
+
+export default function Favorit() {
 
   const router = useRouter()
   const { asPath } = router
 
   const [user, setUser] = useState({})
   const [load, setLoad] = useState(true)
+  const [merchant, setMerchant] = useState([])
 
-  useEffect(() => {
-    const session = localStorage.getItem('session');
-    if(session) {
-      console.log('Youre loged.')
-    }
-    else {
-      Router.push('/login');
-    }
-  }, [])
+  useEffect(async () => {
+    const parse = JSON.parse(localStorage.getItem('session'))
+    const rows = await getMyFavorit(parse.token)
+    setMerchant(rows)
+  }, [merchant])
 
   return (
     <>
@@ -66,60 +69,11 @@ export default function Cari() {
 
         <section className="bg-white p-3">
 
-          <article className="card mb-3">
-            <div className="row g-0">
-              <div className="col-sm-5">
-                <div className="card card-block card-1"></div>
-              </div>
-              <div className="col-md-7">
-                <div className="card-body">
-                  <Link href="/detail">
-                    <h5 className="card-title">PT Bintraco Dharma Tbk</h5>
-                  </Link>
-                  <p className="card-text">Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.</p>
-                  <div className="rating">
-                    <i className="bi bi-star-fill"></i>
-                    <i className="bi bi-star-fill"></i>
-                    <i className="bi bi-star-half"></i>
-                    <i className="bi bi-star"></i>
-                    <i className="bi bi-star"></i>
-                  </div>
-                  <p className="card-text">
-                    <strong>3.0 KM</strong>
-                    <i className="bi bi-heart-fill float-end"></i>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <article className="card mb-3">
-            <div className="row g-0">
-              <div className="col-sm-5">
-                <div className="card card-block card-1"></div>
-              </div>
-              <div className="col-md-7">
-                <div className="card-body">
-                  <Link href="/detail">
-                    <h5 className="card-title">PT Bintraco Dharma Tbk</h5>
-                  </Link>
-                  <p className="card-text">Sunburst CBD Lot II No. 3, BSD City, Lengkong Gudang.</p>
-                  <div className="rating">
-                    <i className="bi bi-star-fill"></i>
-                    <i className="bi bi-star-fill"></i>
-                    <i className="bi bi-star-half"></i>
-                    <i className="bi bi-star"></i>
-                    <i className="bi bi-star"></i>
-                  </div>
-                  <p className="card-text">
-                    <strong>3.0 KM</strong>
-                    <i className="bi bi-heart-fill float-end"></i>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </article>
-
+          {
+            merchant.map((item, i) => (
+              <Explore item={item} key={`exp-${i}`} />
+            ))
+          }
         </section>
 
         <div className="divider"></div>

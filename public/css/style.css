@@ -3,6 +3,12 @@ body {
   font-family: 'system-ui';
 }
 
+.two-line {
+  line-height: 1.5em;
+  height: 3em;       /* height is 2x line-height, so two lines will display */
+  overflow: hidden;  /* prevents extra lines from being visible */
+}
+
 .responsive {
   background-position: center;
   background-size: cover;
@@ -16,6 +22,16 @@ body {
 .square-80 {
   width: 20%;
   height: 80px;
+}
+
+.square-120 {
+  width: 120px;
+  height: 120px;
+}
+
+.news-img {
+  width: 120px;
+  height: 86px;
 }
 
 .mobile {

@@ -7,8 +7,10 @@ import Footer from '../../components/footer'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
-import { API_MERCHANT } from '../../configs/rest'
-import axios from 'axios'
+import {
+  getAllMerchant,
+  getOneMerchant
+} from '../../configs/api'
 
 function Detail({ detail }) {
 
@@ -205,18 +207,15 @@ function Detail({ detail }) {
         : null
       }
 
-
-
     </>
   )
 }
 
 export async function getStaticPaths() {
 
-  const merchants = await axios.post(API_MERCHANT)
-  const { result } = merchants.data
+  const res = await getAllMerchant()
 
-  const paths = result.map((row) => ({
+  const paths = res.map((row) => ({
     params: { id: row.id }
   }))
 
@@ -225,8 +224,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({params}) {
 
-  const res = await axios.post(`${API_MERCHANT}/${params.id}`)
-  const detail = res.data.result;
+  const res = await getOneMerchant(params.id)
+  const detail = res;
 
   if(!detail) {
     return {
