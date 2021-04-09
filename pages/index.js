@@ -98,10 +98,7 @@ function Home({ kategori, merchant, posts, propinsi }) {
             <div className="input-group-prepend">
               <span className="input-group-text" style={{borderTopRightRadius: '0px', borderBottomRightRadius: '0px'}}><i className="bi bi-geo-alt"></i></span>
             </div>
-            <input value={(kota) ? kota.nama : ''} onClick={e => openPosisi()} placeholder="Pilih..." type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
-            <div className="input-group-append">
-              <span className="input-group-text" style={{borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px'}}><i className="bi bi-chevron-right"></i></span>
-            </div>
+            <input defaultValue={(kota) ? kota.nama : ''} onClick={e => openPosisi()} placeholder="Pilih..." type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
           </div>
 
           <Modal show={show} onHide={handleClose} centered>

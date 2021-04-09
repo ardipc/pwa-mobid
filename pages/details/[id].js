@@ -30,10 +30,10 @@ function Detail({ detail }) {
               <article>
                 <div className="cover">
                   <Link href="/">
-                    <i className="bi bi-arrow-left back-top cursor-pointer"></i>
+                    <i style={{color: 'white'}} className="bi bi-arrow-left back-top cursor-pointer"></i>
                   </Link>
-                  <i className="bi bi-heart favorit-top cursor-pointer"></i>
-                  <i className="bi bi-share share-top cursor-pointer"></i>
+                  <i style={{color: 'white'}} className="bi bi-heart favorit-top cursor-pointer"></i>
+                  <i style={{color: 'white'}} className="bi bi-share share-top cursor-pointer"></i>
                   <div className={`bg-info responsive`} style={{width: '100%', height: '300px', marginTop: '-24px', backgroundImage: `url('${img}')`}}></div>
                 </div>
 
@@ -51,7 +51,7 @@ function Detail({ detail }) {
                         detail.hasOwnProperty('images') && detail.images.map((item, i) => (
                           <div className="col" key={`img-${i}`}>
                             <div
-                              className="bg-info rounded responsive cursor-pointer"
+                              className="rounded responsive cursor-pointer"
                               onClick={e => setImg(item)}
                               style={{width: '80px', height: '80px', backgroundImage: `url('${item}')`}}
                               ></div>

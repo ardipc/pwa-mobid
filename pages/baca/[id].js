@@ -29,10 +29,10 @@ function Baca({ detail }) {
               <article>
                 <div className="cover">
                   <Link href="/">
-                    <i className="bi bi-arrow-left back-top cursor-pointer"></i>
+                    <i style={{color: 'white'}} className="bi bi-arrow-left-circle back-top cursor-pointer"></i>
                   </Link>
-                  <i className="bi bi-heart favorit-top cursor-pointer"></i>
-                  <i className="bi bi-share share-top cursor-pointer"></i>
+                  <i style={{color: 'white'}} className="bi bi-heart favorit-top cursor-pointer"></i>
+                  <i style={{color: 'white'}} className="bi bi-share share-top cursor-pointer"></i>
 
                   <div className={`bg-info responsive`} style={{width: '100%', height: '300px', marginTop: '-24px', backgroundImage: `url('${detail.jetpack_featured_media_url}')`}}></div>
 
@@ -99,8 +99,6 @@ function Baca({ detail }) {
 export async function getStaticPaths() {
 
   const res = await getLatestPosts()
-
-  console.log(res[0].id)
 
   const paths = res.map((row) => ({
     params: { id: row.id.toString() }
