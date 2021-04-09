@@ -10,10 +10,11 @@ import moment from 'moment-timezone'
 
 import {
   getLatestPosts,
-  getOnePosts
+  getOnePosts,
+  getAllTags
 } from '../../configs/api'
 
-function Baca({ detail }) {
+function Baca({ detail, tags }) {
 
   return (
     <>
@@ -55,8 +56,8 @@ function Baca({ detail }) {
 
                   <div className="tags mb-4">
                     {
-                      detail.tags.map((item, key) => (
-                        <span className="badge bg-secondary p-2 m-1">{item}</span>
+                      tags.map((item, key) => (
+                        <span className="badge bg-secondary p-2 m-1">{item.name}</span>
                       ))
                     }
                   </div>
@@ -72,9 +73,9 @@ function Baca({ detail }) {
 
                     <div className="col">
                       <div className="d-grid gap-2">
-                        <button className="btn btn-outline-primary">
+                        <a href={`whatsapp://send?text=${detail.link}`} className="btn btn-outline-primary">
                           <i className="bi bi-share"></i> Share
-                        </button>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -109,6 +110,8 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({params}) {
 
+  const tags = await getAllTags(params.id)
+
   const res = await getOnePosts(params.id)
   const detail = res;
 
@@ -120,7 +123,8 @@ export async function getStaticProps({params}) {
 
   return {
     props: {
-      detail
+      detail,
+      tags
     }
   }
 }

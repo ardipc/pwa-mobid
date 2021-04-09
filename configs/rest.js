@@ -20,3 +20,5 @@ export const API_OTP_REQUEST        = `${API_BASE}/p/user/otpRequest`
 export const API_OTP_VALIDATE       = `${API_BASE}/p/user/otpValidate`
 
 export const API_MY_FAVORIT         = `${API_BASE}/p/merchant/myFav`
+
+export const API_TAGS               = `https://carsworld.co.id/wp-json/apps/v2/tags`

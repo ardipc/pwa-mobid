@@ -14,7 +14,8 @@ import {
   API_OTP_REQUEST,
   API_OTP_VALIDATE,
 
-  API_MY_FAVORIT
+  API_MY_FAVORIT,
+  API_TAGS
 } from './rest'
 
 export async function userOTPRequest(nohp) {
@@ -92,4 +93,9 @@ export async function getMyFavorit(kunci) {
   }
   const res = await axios.get(API_MY_FAVORIT, options)
   return res.data.result
+}
+
+export async function getAllTags(id) {
+  const res = await axios.get(`${API_TAGS}/${id}`)
+  return res.data
 }

@@ -111,7 +111,7 @@ function Home({ kategori, merchant, posts, propinsi }) {
                     <ListGroup variant="flush">
                       {
                         propinsi.map((item, i) => (
-                          <ListGroup.Item className="cursor-pointer" onClick={e => choosePropinsi(item)}>{item.nama}</ListGroup.Item>
+                          <ListGroup.Item key={`lg-${i}`} className="cursor-pointer" onClick={e => choosePropinsi(item)}>{item.nama}</ListGroup.Item>
                         ))
                       }
                     </ListGroup>
