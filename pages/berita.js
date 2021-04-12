@@ -35,7 +35,7 @@ function Beritas({ posts, kategori }) {
             <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Semua</span></div>
             {
               kategori.map((item, i) => (
-                <div className="col px-0"><span className="badge bg-primary p-2 mx-1">{item.name}</span></div>
+                <div key={`ka-${i}`} className="col px-0"><span className="badge bg-primary p-2 mx-1">{item.name}</span></div>
               ))
             }
           </div>
@@ -49,13 +49,11 @@ function Beritas({ posts, kategori }) {
             <a className="float-end text-decoration-none font-weight-normal">Lainnya</a>
           </p>
 
-          <div className="row mb-3">
-            {
-              posts.map((item, i) => (
-                <Berita item={item} key={`ber-${i}`} />
-              ))
-            }
-          </div>
+          {
+            posts.map((item, i) => (
+              <Berita item={item} key={`ber-${i}`} />
+            ))
+          }
 
           <nav aria-label="Page navigation">
             <ul className="pagination">

@@ -1,19 +1,20 @@
 import fetchJson from '../../lib/fetchJson'
 import withSession from '../../lib/session'
 
-export default withSession(async (req, res) => {
-  const { username } = await req.body
-  const url = `https://api.github.com/users/${username}`
+import { userOTPValidate } from '../../configs/api'
 
-  try {
-    // we check that the user exists on GitHub and store some data in session
-    const { login, avatar_url: avatarUrl } = await fetchJson(url)
-    const user = { isLoggedIn: true, login, avatarUrl }
+export default withSession(async (req, res) => {
+  const { nohp, otp } = await req.body
+  const { success, code, message, metadata, result } = await userOTPValidate(nohp, otp)
+
+  if(success) {
+    const user = { isLoggedIn: true, success, code, message, metadata, result }
     req.session.set('user', user)
     await req.session.save()
     res.json(user)
-  } catch (error) {
-    const { response: fetchResponse } = error
-    res.status(fetchResponse?.status || 500).json(error.data)
   }
+  else {
+    res.json({ success, code, message })
+  }
+
 })

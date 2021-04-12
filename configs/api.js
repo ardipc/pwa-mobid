@@ -15,7 +15,10 @@ import {
   API_OTP_VALIDATE,
 
   API_MY_FAVORIT,
-  API_TAGS
+  API_TAGS,
+
+  API_BOOKMARK,
+  API_BOOKMARK_DEL
 } from './rest'
 
 export async function userOTPRequest(nohp) {
@@ -97,5 +100,25 @@ export async function getMyFavorit(kunci) {
 
 export async function getAllTags(id) {
   const res = await axios.get(`${API_TAGS}/${id}`)
+  return res.data
+}
+
+export async function addBookmark(token, id) {
+  const options = {
+    headers: {
+      'X-ACCESS-TOKEN': token
+    }
+  }
+  const res = await axios.get(`${API_BOOKMARK}/${id}`, options)
+  return res.data
+}
+
+export async function delBookmark(token, id) {
+  const options = {
+    headers: {
+      'X-ACCESS-TOKEN': token
+    }
+  }
+  const res = await axios.get(`${API_BOOKMARK_DEL}/${id}`, options)
   return res.data
 }

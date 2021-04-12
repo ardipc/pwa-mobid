@@ -15,7 +15,7 @@ export default function Cari() {
         <nav className="navbar navbar-dark bg-primary">
           <div className="container-fluid text-center">
             <span className="navbar-brand mb-0 h1">
-              <Link href="/"><i className="bi bi-arrow-left"></i></Link>{' '}
+              <Link href="/"><i className="bi bi-arrow-left cursor-pointer"></i></Link>{' '}
               Daftar
             </span>
           </div>
@@ -29,11 +29,11 @@ export default function Cari() {
 
           <div className="mb-2 mt-3">
             <label htmlFor="nomor" className="form-label">Nomor atau Email</label>
-            <input type="email" className="form-control form-control-sm" placeholder="Masukan nomor atau email" />
+            <input type="email" className="form-control" placeholder="Masukan nomor atau email" />
           </div>
           <div className="mb-4">
             <label htmlFor="nomor" className="form-label">Nama Lengkap</label>
-            <input type="text" className="form-control form-control-sm" placeholder="Masukan nama lengkap" />
+            <input type="text" className="form-control" placeholder="Masukan nama lengkap" />
           </div>
 
           <div className="text-center">

@@ -24,7 +24,7 @@ export default function Akun() {
   const router = useRouter()
   const { asPath } = router
 
-  const [user1, setUser1] = useState({});
+  const [info, setInfo] = useState({});
   const [load, setLoad] = useState(true)
 
   useEffect(() => {
@@ -40,20 +40,16 @@ export default function Akun() {
       axios.get(API_GET_PROFILE, configs).then(res => {
         if(res.status === 200) {
           const { result } = res.data
-          setUser1(result);
+          setInfo(result);
           setLoad(false);
         }
       });
     }
-    // else {
-      // Router.push('/login');
-    // }
   }, [])
 
   const btnLogout = async (e) => {
     localStorage.removeItem('session');
     await mutateUser(fetchJson('/api/logout'))
-    Router.push('/');
   }
 
   const handleClose = () => setLoad(false);
@@ -95,35 +91,35 @@ export default function Akun() {
                       <Spinner style={{position: 'relative', top: '30%'}} animation="grow" />
                     </div>
                   :
-                    <img alt={user1.fullname} src={user1.image_url} className="twPc-avatarImg" />
+                    <img alt={info.fullname} src={info.image_url} className="twPc-avatarImg" />
                 }
           		</a>
 
           		<div className="twPc-divUser">
           			<div className="twPc-divName">
-          				<a className="text-decoration-none" href="#">{user1.fullname}</a>
+          				<a className="text-decoration-none" href="#">{info.fullname}</a>
           			</div>
           			<span>
-          				<a className="text-decoration-none fc-success" href="#"><span>{user1.email}</span></a>
+          				<a className="text-decoration-none fc-success" href="#"><span>{info.email}</span></a>
           			</span>
           		</div>
 
           		<div className="twPc-divStats text-center mb-1">
           			<ul className="twPc-Arrange">
           				<li className="twPc-ArrangeSizeFit">
-          					<a className="text-decoration-none" href="https://twitter.com/mertskaplan" title="9.840 Tweet">
+          					<a className="text-decoration-none" href="#" title="9.840 Tweet">
           						<span className="twPc-StatLabel twPc-block">Tweets</span>
           						<span className="twPc-StatValue">9.840</span>
           					</a>
           				</li>
           				<li className="twPc-ArrangeSizeFit">
-          					<a className="text-decoration-none" href="https://twitter.com/mertskaplan/following" title="885 Following">
+          					<a className="text-decoration-none" href="#" title="885 Following">
           						<span className="twPc-StatLabel twPc-block">Following</span>
           						<span className="twPc-StatValue">885</span>
           					</a>
           				</li>
           				<li className="twPc-ArrangeSizeFit">
-          					<a className="text-decoration-none" href="https://twitter.com/mertskaplan/followers" title="1.810 Followers">
+          					<a className="text-decoration-none" href="#" title="1.810 Followers">
           						<span className="twPc-StatLabel twPc-block">Followers</span>
           						<span className="twPc-StatValue">1.810</span>
           					</a>
@@ -144,30 +140,30 @@ export default function Akun() {
             <div className="mb-3">
               <div className="input-group input-group-sm">
                 <span className="input-group-text"><i className="bi bi-person"></i></span>
-                <input value={user.fullname} type="text" className="form-control" placeholder="Nama" aria-label="Nama" aria-describedby="basic-addon1" />
+                <input defaultValue={info.fullname} type="text" className="form-control" placeholder="Nama" aria-label="Nama" aria-describedby="basic-addon1" />
               </div>
               <div className="form-text">Nama kamu siapa nih.</div>
             </div>
             <div className="mb-3">
               <div className="input-group input-group-sm">
+                <span className="input-group-text"><i className="bi bi-telephone"></i></span>
+                <input defaultValue={info.phone} type="number" className="form-control" placeholder="Telepon" aria-label="Telepon" aria-describedby="basic-addon1" />
+              </div>
+              <div className="form-text">Nomor telepon kamu.</div>
+            </div>
+            <div className="mb-3">
+              <div className="input-group input-group-sm">
                 <span className="input-group-text"><i className="bi bi-envelope"></i></span>
-                <input value={user.email} type="email" className="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" />
+                <input defaultValue={info.email} type="email" className="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" />
               </div>
               <div className="form-text">Alamat email kamu.</div>
             </div>
             <div className="mb-3">
               <div className="input-group input-group-sm">
                 <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
-                <input value={user.address} type="text" className="form-control" placeholder="Alamat" aria-label="Alamat" aria-describedby="basic-addon1" />
+                <input defaultValue={info.address} type="text" className="form-control" placeholder="Alamat" aria-label="Alamat" aria-describedby="basic-addon1" />
               </div>
               <div className="form-text">Kamu tinggal dimana.</div>
-            </div>
-            <div className="mb-3">
-              <div className="input-group input-group-sm">
-                <span className="input-group-text"><i className="bi bi-telephone"></i></span>
-                <input value={user.phone} type="number" className="form-control" placeholder="Telepon" aria-label="Telepon" aria-describedby="basic-addon1" />
-              </div>
-              <div className="form-text">Nomor telepon kamu.</div>
             </div>
 
             <div className="d-grid gap-2 mb-2">

@@ -12,11 +12,14 @@ import {
   getOneMerchant
 } from '../../configs/api'
 
+function changeToWA(number) {
+  const nol = number.charAt(0)
+  return nol === "0" ? `62${number.substring(1)}` : number
+}
+
 function Detail({ detail }) {
 
   const [img, setImg] = useState(detail ? detail.imageUrl : '')
-
-  console.log('img', img)
 
   return (
     <>
@@ -71,6 +74,8 @@ function Detail({ detail }) {
                         <i style={{color: '#ffc107'}} className={`mx-1 bi bi-star${key < Math.floor(detail.rating) ? '-fill' : ''}`}></i>
                       ))
                     }
+
+                    {' '}<span>({detail.rating})</span>
                   </div>
 
                   <div className="mb-2 mt-3">
@@ -96,7 +101,7 @@ function Detail({ detail }) {
                   <div className="action row text-center">
                     <div className="col">
                       <div className="d-grid gap-2">
-                        <a href="tel:+6282334093822" target="_blank">
+                        <a href={`tel:${detail.phone}`} target="_blank">
                           <button className="btn btn-outline-primary">
                             <i className="bi bi-telephone"></i> Telepon
                           </button>
@@ -105,7 +110,7 @@ function Detail({ detail }) {
                     </div>
                     <div className="col">
                       <div className="d-grid gap-2">
-                        <a href="https://wa.me/6282334093822/?text=Tanya%20Dong." target="_blank">
+                        <a href={`https://wa.me/${changeToWA(detail.whatsapp)}/?text=Tanya%20Dong`} target="_blank">
                           <button className="btn btn-outline-primary">
                             <i className="bi bi-whatsapp"></i> Whatsapp
                           </button>

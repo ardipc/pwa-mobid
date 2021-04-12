@@ -30,7 +30,7 @@ function Baca({ detail, tags }) {
               <article>
                 <div className="cover">
                   <Link href="/">
-                    <i style={{color: 'white'}} className="bi bi-arrow-left-circle back-top cursor-pointer"></i>
+                    <i style={{color: 'white'}} className="bi bi-arrow-left back-top cursor-pointer"></i>
                   </Link>
                   <i style={{color: 'white'}} className="bi bi-heart favorit-top cursor-pointer"></i>
                   <i style={{color: 'white'}} className="bi bi-share share-top cursor-pointer"></i>

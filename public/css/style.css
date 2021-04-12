@@ -3,6 +3,19 @@ body {
   font-family: 'system-ui';
 }
 
+.Toastify__toast {
+  min-height: 52px !important;
+  margin-bottom: 4rem !important;
+}
+
+.Toastify__toast-container {
+  width: auto !important;
+}
+
+.Toastify__toast-body {
+  font-size: 12px;
+}
+
 .two-line {
   line-height: 1.5em;
   height: 3em;       /* height is 2x line-height, so two lines will display */

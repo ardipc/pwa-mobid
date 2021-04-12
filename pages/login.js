@@ -9,10 +9,7 @@ import { useState } from 'react'
 
 import { Modal } from 'react-bootstrap'
 
-import {
-  userOTPRequest,
-  userOTPValidate
-} from '../configs/api'
+import { userOTPRequest } from '../configs/api'
 
 import useUser from '../lib/useUser'
 import fetchJson from '../lib/fetchJson'
@@ -44,26 +41,19 @@ export default function Login() {
 
   const btnValidasi = async (e) => {
     if(otp) {
-      const req = await userOTPValidate(user, otp)
-      if(req.success){
+      const req = await fetchJson('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nohp: user, otp: otp })
+      })
+
+      if(req.success) {
         localStorage.setItem('session', JSON.stringify({token: req.metadata}))
-        Router.push('/')
-      } else {
+        await mutateUser(req)
+      }
+      else {
         setMsg(req.message)
         setOtp('')
-      }
-
-      try {
-        await mutateUser(
-          fetchJson('/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: 'ardipc' })
-          })
-        )
-      } catch (e) {
-        console.error('An unexpected error happened:', error)
-        setErrorMsg(e)
       }
     }
     else {
@@ -81,7 +71,7 @@ export default function Login() {
         <nav className="navbar navbar-dark bg-primary">
           <div className="container-fluid text-center">
             <span className="navbar-brand mb-0 h1">
-              <Link href="/"><i className="bi bi-arrow-left"></i></Link>{' '}
+              <Link href="/"><i className="bi bi-arrow-left cursor-pointer"></i></Link>{' '}
               Masuk
             </span>
           </div>
@@ -95,7 +85,7 @@ export default function Login() {
 
           <div className="my-4">
             <label htmlFor="nomor" className="form-label">Nomor HP Kamu</label>
-            <input onChange={e => setUser(e.target.value)} value={user} type="text" className="form-control form-control-sm" placeholder="Masukan nomor atau email" />
+            <input onChange={e => setUser(e.target.value)} value={user} type="text" className="form-control" placeholder="Masukan nomor atau email" />
           </div>
 
           <div className="text-center">

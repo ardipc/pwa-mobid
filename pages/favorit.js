@@ -8,18 +8,25 @@ import NavBottom from '../components/nav-bottom'
 import Router, { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
+import useUser from '../lib/useUser'
+
 import Explore from '../components/explore'
 
+import { toast } from 'react-toastify'
+
 import {
-  getMyFavorit
+  getMyFavorit,
+  delBookmark
 } from '../configs/api'
 
 export default function Favorit() {
 
+  const { user } = useUser({ redirectTo: '/login' })
+
   const router = useRouter()
   const { asPath } = router
 
-  const [user, setUser] = useState({})
+  const [info, setInfo] = useState({})
   const [load, setLoad] = useState(true)
   const [merchant, setMerchant] = useState([])
 
@@ -33,7 +40,27 @@ export default function Favorit() {
     else {
       Router.push('/login');
     }
-  }, [merchant])
+  }, [])
+
+  const delFav = async (id) => {
+    const session = localStorage.getItem('session')
+    if(session) {
+      const parse = JSON.parse(localStorage.getItem('session'))
+      const req = await delBookmark(parse.token, id)
+      if(req.success) {
+        const rows = await getMyFavorit(parse.token)
+        setMerchant(rows)
+        toast.info(req.message)
+      }
+    }
+    else {
+      router.push('/login')
+    }
+  }
+
+  if (!user || user.isLoggedIn === false) {
+    return <p>loading...</p>
+  }
 
   return (
     <>
@@ -77,7 +104,7 @@ export default function Favorit() {
 
           {
             merchant.map((item, i) => (
-              <Explore item={item} key={`exp-${i}`} />
+              <Explore item={item} key={`exp-${i}`} actions={{delFav}} dari="favorit" />
             ))
           }
         </section>

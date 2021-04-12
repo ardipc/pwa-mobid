@@ -1,13 +1,22 @@
 import Link from 'next/link'
 
-function Explore({ item }) {
+function Explore({ item, actions, dari }) {
+
+  const addFav = async (id) => {
+    actions.addFav(id)
+  }
+
+  const delFav = async (id) => {
+    actions.delFav(id)
+  }
+
   return (
     <article className="row flex-row my-4">
       <div className="col-4">
         <div className="bg-info square-120 responsive rounded" style={{backgroundImage: `url(${item.imageUrl})`}}></div>
       </div>
       <div className="col-8 pl-4">
-        <i className="bi bi-heart float-end"></i>
+        <i onClick={e => dari ? delFav(item.id) : addFav(item.id)} className={`bi bi-heart${dari ? '-fill' : ''} float-end cursor-pointer`} style={{color: '#ff6961'}}></i>
         <Link href={`/details/${item.id}`}>
           <h6 className="card-title cursor-pointer">{item.name}</h6>
         </Link>

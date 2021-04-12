@@ -74,7 +74,7 @@ function Konsultasi({ konsultasi, merchant }) {
           <div className="row flex-row text-center">
             {
               konsultasi.map((item, i) => (
-                <div onClick={e => openIndikasi(item)} className="col-3 my-2">
+                <div key={`kons-${i}`} onClick={e => openIndikasi(item)} className="col-3 my-2 cursor-pointer">
                   <img src={item.icon} className="square-50" />
                   <span className="small d-block mt-2">{item.nama}</span>
                 </div>

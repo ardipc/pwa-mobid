@@ -13,12 +13,15 @@ import { useRouter } from 'next/router'
 import Berita from '../components/berita'
 import Explore from '../components/explore'
 
+import { toast } from 'react-toastify'
+
 import {
   getAllKategori,
   getAllMerchant,
   getLatestPosts,
   getPropinsi,
-  getKota
+  getKota,
+  addBookmark
 } from '../configs/api'
 
 function Home({ kategori, merchant, posts, propinsi }) {
@@ -59,8 +62,6 @@ function Home({ kategori, merchant, posts, propinsi }) {
   }
 
   const choosePropinsi = async (item) => {
-    console.log(item)
-
     setProp(item)
     localStorage.setItem('propinsi', JSON.stringify(item))
 
@@ -69,8 +70,6 @@ function Home({ kategori, merchant, posts, propinsi }) {
   }
 
   const chooseKota = async (item) => {
-    console.log(item)
-
     setKota(item)
     localStorage.setItem('kota', JSON.stringify(item))
 
@@ -78,6 +77,18 @@ function Home({ kategori, merchant, posts, propinsi }) {
     setMer(filter)
 
     setShow(false)
+  }
+
+  const addFav = async (id) => {
+    const session = localStorage.getItem('session')
+    if(session) {
+      const parse = JSON.parse(localStorage.getItem('session'))
+      const req = await addBookmark(parse.token, id)
+      toast.info(req.message)
+    }
+    else {
+      router.push('/login')
+    }
   }
 
   return (
@@ -188,7 +199,7 @@ function Home({ kategori, merchant, posts, propinsi }) {
 
           {
             mer.map((item, i) => (
-              <Explore item={item} key={`ex-${i}`} />
+              <Explore item={item} key={`ex-${i}`} actions={{addFav}} />
             ))
           }
         </section>
