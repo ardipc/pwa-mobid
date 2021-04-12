@@ -71,7 +71,7 @@ function Detail({ detail }) {
                   <div className="rating">
                     {
                       detail && [1,2,3,4,5].map((row, key) => (
-                        <i style={{color: '#ffc107'}} className={`mx-1 bi bi-star${key < Math.floor(detail.rating) ? '-fill' : ''}`}></i>
+                        <i key={`ratt-${key}`} style={{color: '#ffc107'}} className={`mx-1 bi bi-star${key < Math.floor(detail.rating) ? '-fill' : ''}`}></i>
                       ))
                     }
 
