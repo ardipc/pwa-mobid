@@ -178,7 +178,11 @@ function Home({ kategori, merchant, posts, propinsi }) {
         <section className="bg-white p-3">
           <p className="h6 mb-3">
             Explore
-            <a className="float-end text-decoration-none font-weight-normal cursor-pointer">Lainnya</a>
+            {
+              /*
+              <a className="float-end text-decoration-none font-weight-normal cursor-pointer">Lainnya</a>
+              */
+            }
           </p>
 
           {
@@ -209,7 +213,11 @@ function Home({ kategori, merchant, posts, propinsi }) {
         <section className="bg-white p-3">
           <p className="h6 mb-3">
             Berita Terbaru
-            <a className="float-end text-decoration-none font-weight-normal cursor-pointer">Lainnya</a>
+            {
+              /*
+              <a className="float-end text-decoration-none font-weight-normal cursor-pointer">Lainnya</a>
+              */
+            }
           </p>
 
           {

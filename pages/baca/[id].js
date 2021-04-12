@@ -57,7 +57,7 @@ function Baca({ detail, tags }) {
                   <div className="tags mb-4">
                     {
                       tags.map((item, key) => (
-                        <span className="badge bg-secondary p-2 m-1">{item.name}</span>
+                        <Link key={`tt-${key}`} href={`/tags?id=${item.term_id}`}><span className="badge bg-secondary p-2 m-1">{item.name}</span></Link>
                       ))
                     }
                   </div>

@@ -15,6 +15,7 @@ export const API_GET_PROFILE        = `${API_BASE}/p/user`
 export const API_POSTS              = `https://carsworld.co.id/wp-json/wp/v2/posts?page=1&per_page=5`
 export const API_POSTS_ONE          = `https://carsworld.co.id/wp-json/wp/v2/posts`
 export const API_POSTS_CATEGORY     = `https://carsworld.co.id/wp-json/wp/v2/categories?parent=0`
+export const API_POSTS_TAGS         = `https://carsworld.co.id/wp-json/wp/v2/tags?per_page=100`
 
 export const API_OTP_REQUEST        = `${API_BASE}/p/user/otpRequest`
 export const API_OTP_VALIDATE       = `${API_BASE}/p/user/otpValidate`

@@ -234,7 +234,7 @@ export async function getStaticProps({params}) {
 
   if(!detail) {
     return {
-      norFound: true
+      notFound: true
     }
   }
 

@@ -18,7 +18,9 @@ import {
   API_TAGS,
 
   API_BOOKMARK,
-  API_BOOKMARK_DEL
+  API_BOOKMARK_DEL,
+
+  API_POSTS_TAGS
 } from './rest'
 
 export async function userOTPRequest(nohp) {
@@ -55,6 +57,16 @@ export async function getAllKategori() {
   return result
 }
 
+export async function getPostByTags(id) {
+  const res = await axios.get(`${API_POSTS}&tags=${id}`)
+  return res.data
+}
+
+export async function getTags() {
+  const res = await axios.get(API_POSTS_TAGS)
+  return res.data
+}
+
 export async function getAllMerchant() {
   const res = await axios.post(API_MERCHANT)
   const { result } = res.data
@@ -75,6 +87,11 @@ export async function getAllKonsultasi() {
 
 export async function getLatestPosts() {
   const res = await axios.get(API_POSTS)
+  return res.data
+}
+
+export async function getPostsByCategories(id) {
+  const res = await axios.get(`${API_POSTS}&categories=${id}`)
   return res.data
 }
 

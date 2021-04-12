@@ -5,66 +5,51 @@ import Heading from '../components/heading'
 import Footer from '../components/footer'
 import NavBottom from '../components/nav-bottom'
 
+import { Spinner } from 'react-bootstrap'
+
 import { useRouter } from 'next/router'
 import Berita from '../components/berita'
 
 import { useState, useEffect } from 'react'
 
 import {
-  getAllKategoriPost,
-  getLatestPosts,
-  getPostsByCategories
+  getTags,
+  getPostByTags
 } from '../configs/api'
 
-function Beritas({ posts, kategori }) {
-
-  const [title, setTitle] = useState('Semua')
-  const [news, setNews] = useState(posts)
+function Tags() {
 
   const router = useRouter()
   const { asPath } = router
+  const { id } = router.query
 
-  const showLatest = async () => {
-    const rows = await getLatestPosts()
-    setNews(rows)
-    setTitle('Semua')
-  }
+  const [load, setLoad] = useState(true)
+  const [news, setNews] = useState([])
 
-  const chooseCat = async (id, name) => {
-    const rows = await getPostsByCategories(id)
+  useEffect(async () => {
+    const rows = await getPostByTags(id)
     setNews(rows)
-    setTitle(name)
-  }
+    setLoad(false)
+  }, [])
 
   return (
     <>
 
-      <Heading title={`Berita | Mobid`} />
+      <Heading title={`Tags | Mobid`} />
 
       <NavBottom isActive={asPath} />
 
       <div className="pb-5 mobile">
 
         <section className="text-center pt-4">
-          <p style={{color: '#0d6efd', fontWeight: 'bold'}}>B E R I T A</p>
-        </section>
-
-        <section className="px-3 pt-3 pb-2">
-          <div className="scrolling-wrapper row flex-row flex-nowrap">
-            <div onClick={e => showLatest()} className="col px-0"><span className="badge bg-primary p-2 mx-1">Semua</span></div>
-            {
-              kategori.map((item, i) => (
-                <div key={`ka-${i}`} onClick={e => chooseCat(item.id, item.name)} className="col px-0"><span className="badge bg-primary p-2 mx-1">{item.name}</span></div>
-              ))
-            }
-          </div>
+          <p style={{color: '#0d6efd', fontWeight: 'bold'}}>T A G S</p>
         </section>
 
         <div className="divider"></div>
 
         <section className="bg-white p-3">
           <p className="h6 mb-3">
-            {title}
+            Berita terkait
             {
               /*
               <a className="float-end text-decoration-none font-weight-normal">Lainnya</a>
@@ -73,23 +58,32 @@ function Beritas({ posts, kategori }) {
           </p>
 
           {
-            news.length === 0 &&
-            <div>
-              <div className="update text-center m-3">
-                <Image
-                  src="/img/nodata.png"
-                  alt="No data"
-                  width={120}
-                  height={120}
-                />
-                <h5 className="mt-3">Oops</h5>
-                <p>Belum ada berita nih.</p>
+            load === true ?
+              <div className="text-center">
+                <Spinner animation="grow" />
               </div>
-            </div>
+            : null
           }
 
           {
-            news.map((item, i) => (
+            load === false && news.length === 0 ?
+              <div>
+                <div className="update text-center m-3">
+                  <Image
+                    src="/img/nodata.png"
+                    alt="No data"
+                    width={120}
+                    height={120}
+                  />
+                  <h5 className="mt-3">Oops</h5>
+                  <p>Belum ada berita nih.</p>
+                </div>
+              </div>
+            : null
+          }
+
+          {
+            load === false && news.map((item, i) => (
               <Berita item={item} key={`ber-${i}`} />
             ))
           }
@@ -128,14 +122,10 @@ function Beritas({ posts, kategori }) {
   )
 }
 
-export async function getStaticProps({params}) {
-
-  const kategori      = await getAllKategoriPost()
-  const posts         = await getLatestPosts()
-
+export async function getServerSideProps() {
   return {
-    props: { kategori, posts }
+    props: {}
   }
 }
 
-export default Beritas;
+export default Tags;
