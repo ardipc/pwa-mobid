@@ -14,12 +14,17 @@ import Heading from '../components/heading'
 import Footer from '../components/footer'
 import NavBottom from '../components/nav-bottom'
 
+import fetchJson from '../lib/fetchJson'
+import useUser from '../lib/useUser'
+
 export default function Akun() {
+
+  const { user, mutateUser } = useUser({ redirectTo: '/login' })
 
   const router = useRouter()
   const { asPath } = router
 
-  const [user, setUser] = useState({});
+  const [user1, setUser1] = useState({});
   const [load, setLoad] = useState(true)
 
   useEffect(() => {
@@ -35,22 +40,27 @@ export default function Akun() {
       axios.get(API_GET_PROFILE, configs).then(res => {
         if(res.status === 200) {
           const { result } = res.data
-          setUser(result);
+          setUser1(result);
           setLoad(false);
         }
       });
     }
-    else {
-      Router.push('/login');
-    }
+    // else {
+      // Router.push('/login');
+    // }
   }, [])
 
-  const btnLogout = (e) => {
+  const btnLogout = async (e) => {
     localStorage.removeItem('session');
+    await mutateUser(fetchJson('/api/logout'))
     Router.push('/');
   }
 
   const handleClose = () => setLoad(false);
+
+  if (!user || user.isLoggedIn === false) {
+    return <p>loading...</p>
+  }
 
   return (
     <>
@@ -85,16 +95,16 @@ export default function Akun() {
                       <Spinner style={{position: 'relative', top: '30%'}} animation="grow" />
                     </div>
                   :
-                    <img alt={user.fullname} src={user.image_url} className="twPc-avatarImg" />
+                    <img alt={user1.fullname} src={user1.image_url} className="twPc-avatarImg" />
                 }
           		</a>
 
           		<div className="twPc-divUser">
           			<div className="twPc-divName">
-          				<a className="text-decoration-none" href="#">{user.fullname}</a>
+          				<a className="text-decoration-none" href="#">{user1.fullname}</a>
           			</div>
           			<span>
-          				<a className="text-decoration-none fc-success" href="#"><span>{user.email}</span></a>
+          				<a className="text-decoration-none fc-success" href="#"><span>{user1.email}</span></a>
           			</span>
           		</div>
 

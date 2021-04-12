@@ -14,7 +14,16 @@ import {
   userOTPValidate
 } from '../configs/api'
 
+import useUser from '../lib/useUser'
+import fetchJson from '../lib/fetchJson'
+
 export default function Login() {
+
+  const { mutateUser } = useUser({
+    redirectTo: '/akun',
+    redirectIfFound: true
+  })
+
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -42,6 +51,19 @@ export default function Login() {
       } else {
         setMsg(req.message)
         setOtp('')
+      }
+
+      try {
+        await mutateUser(
+          fetchJson('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: 'ardipc' })
+          })
+        )
+      } catch (e) {
+        console.error('An unexpected error happened:', error)
+        setErrorMsg(e)
       }
     }
     else {
