@@ -15,7 +15,7 @@ function MyApp({ Component, pageProps }) {
       }}
     >
       <Component {...pageProps} />
-      <ToastContainer position="bottom-center" closeButton={false} autoClose={2000} />
+      <ToastContainer position="top-center" closeButton={false} autoClose={1500} hideProgressBar={true} />
     </SWRConfig>
   )
 }

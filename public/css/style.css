@@ -5,11 +5,11 @@ body {
 
 .Toastify__toast {
   min-height: 52px !important;
-  margin-bottom: 4rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
 .Toastify__toast-container {
-  width: auto !important;
+  padding: 6px !important;
 }
 
 .Toastify__toast-body {
