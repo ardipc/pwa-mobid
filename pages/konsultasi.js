@@ -20,7 +20,7 @@ function Konsultasi({ konsultasi, merchant }) {
 
   const indikasies = ["Mesin mati total", "Mesin bunyi kretek-kretek", "Mesin keluar asap", "Mesin keluar oli"]
 
-  const [mer, setMer] = useState(merchant.slice(0,2))
+  const [mer, setMer] = useState(merchant)
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -112,10 +112,15 @@ function Konsultasi({ konsultasi, merchant }) {
 
 export async function getStaticProps() {
   const konsultasi    = await getAllKonsultasi()
-  const merchant      = await getAllMerchant()
+
+  const merBody = {
+    page: 0,
+    max: 3
+  }
+  const merchant      = await getAllMerchant(merBody)
 
   return {
-    props: { konsultasi, merchant }
+    props: { konsultasi, merchant: merchant.result }
   }
 }
 
