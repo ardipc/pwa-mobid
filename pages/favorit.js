@@ -4,24 +4,38 @@ import Image from 'next/image'
 import Heading from '../components/heading'
 import Footer from '../components/footer'
 import NavBottom from '../components/nav-bottom'
+import Explore from '../components/explore'
 
 import Router, { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
-
-import useUser from '../lib/useUser'
-
-import Explore from '../components/explore'
-
 import { toast } from 'react-toastify'
+
+import withSession from '../lib/session'
 
 import {
   getMyFavorit,
   delBookmark
 } from '../configs/api'
 
-export default function Favorit() {
+export const getServerSideProps = withSession(async ({req, res}) => {
 
-  const { user } = useUser({ redirectTo: '/login' })
+  const user = req.session.get('user')
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: { user }
+  }
+})
+
+export default function Favorit({ user, posts }) {
 
   const router = useRouter()
   const { asPath } = router
@@ -30,36 +44,22 @@ export default function Favorit() {
   const [load, setLoad] = useState(true)
   const [merchant, setMerchant] = useState([])
 
+  const fetchMerchant = async (token) => {
+    const rows = await getMyFavorit(token)
+    setMerchant(rows)
+  }
+
   useEffect(async () => {
-    const session = localStorage.getItem('session');
-    if(session) {
-      const parse = JSON.parse(localStorage.getItem('session'))
-      const rows = await getMyFavorit(parse.token)
-      setMerchant(rows)
-    }
-    else {
-      Router.push('/login');
-    }
+    fetchMerchant(user.metadata)
   }, [])
 
   const delFav = async (id) => {
-    const session = localStorage.getItem('session')
-    if(session) {
-      const parse = JSON.parse(localStorage.getItem('session'))
-      const req = await delBookmark(parse.token, id)
-      if(req.success) {
-        const rows = await getMyFavorit(parse.token)
-        setMerchant(rows)
-        toast.info(req.message)
-      }
+    const req = await delBookmark(user.metadata, id)
+    if(req.success) {
+      const rows = await getMyFavorit(user.metadata)
+      setMerchant(rows)
+      toast.info(req.message)
     }
-    else {
-      router.push('/login')
-    }
-  }
-
-  if (!user || user.isLoggedIn === false) {
-    return <p>loading...</p>
   }
 
   return (

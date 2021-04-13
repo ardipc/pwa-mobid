@@ -24,15 +24,23 @@ import {
   addBookmark
 } from '../configs/api'
 
+import useUser from '../lib/useUser'
+
 function Home({ kategori, merchant, posts, propinsi }) {
 
+  const { user } = useUser()
+
   const [kotaList, setKotaList] = useState([]);
+
+  const [load, setLoad] = useState(false);
 
   const [show, setShow] = useState(false);
   const [prop, setProp] = useState('');
   const [kota, setKota] = useState('');
 
-  const [mer, setMer] = useState(merchant);
+  const [cari, setCari] = useState('');
+
+  const [mer, setMer] = useState(merchant.result);
 
   useEffect(() => {
     setProp(localStorage.getItem('propinsi') ? JSON.parse(localStorage.getItem('propinsi')) : '')
@@ -40,7 +48,7 @@ function Home({ kategori, merchant, posts, propinsi }) {
 
     if(localStorage.getItem('kota')) {
       const parse = JSON.parse(localStorage.getItem('kota'))
-      const filter = merchant.filter(row => row.kota === parse.nama)
+      const filter = mer.filter(row => row.kota === parse.nama)
       setMer(filter)
     }
   }, [])
@@ -57,7 +65,7 @@ function Home({ kategori, merchant, posts, propinsi }) {
     setKotaList([])
     localStorage.removeItem('propinsi')
     localStorage.removeItem('kota')
-    setMer(merchant)
+    setMer(merchant.result)
     setShow(true)
   }
 
@@ -73,21 +81,54 @@ function Home({ kategori, merchant, posts, propinsi }) {
     setKota(item)
     localStorage.setItem('kota', JSON.stringify(item))
 
-    const filter = merchant.filter(row => row.kota === item.nama)
+    const filter = mer.filter(row => row.kota === item.nama)
     setMer(filter)
 
     setShow(false)
   }
 
   const addFav = async (id) => {
-    const session = localStorage.getItem('session')
-    if(session) {
-      const parse = JSON.parse(localStorage.getItem('session'))
-      const req = await addBookmark(parse.token, id)
+    if(user.isLoggedIn) {
+      const req = await addBookmark(user.metadata, id)
       toast.info(req.message)
     }
     else {
       router.push('/login')
+    }
+  }
+
+  const chooseKategori = async (id) => {
+    const merBody       = {
+      max: 10,
+      page: 0
+    }
+
+    if(id !== "0") merBody.cat = id
+
+    setLoad(true)
+    const m = await getAllMerchant(merBody)
+    setMer(m.result ? m.result : [])
+    setLoad(false)
+  }
+
+  const submitCari = async (e) => {
+    if (e.key === "Enter") {
+      const merBody = {
+        max: 10,
+        page: 0,
+        cari: cari
+      }
+
+      setLoad(true)
+      const m = await getAllMerchant(merBody)
+      let temp = []
+
+      if(m.metadata.total > 0) {
+        temp = kota ? m.result.filter(item => item.kota === kota.nama) : m.result
+      }
+
+      setMer(temp)
+      setLoad(false)
     }
   }
 
@@ -153,10 +194,10 @@ function Home({ kategori, merchant, posts, propinsi }) {
 
         <section className="px-3 pt-3">
           <div className="scrolling-wrapper row flex-row flex-nowrap">
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1 cursor-pointer">Semua</span></div>
+            <div onClick={e => chooseKategori("0")} className="col px-0"><span className="badge bg-primary p-2 mx-1 cursor-pointer">Semua</span></div>
             {
               kategori.map((item, i) => (
-                <div key={`kat-${i}`} className="col px-0"><span className="badge bg-primary p-2 mx-1 cursor-pointer">{item.name}</span></div>
+                <div key={`kat-${i}`} onClick={e => chooseKategori(item.id)} className="col px-0"><span className="badge bg-primary p-2 mx-1 cursor-pointer">{item.name}</span></div>
               ))
             }
           </div>
@@ -169,7 +210,7 @@ function Home({ kategori, merchant, posts, propinsi }) {
                 <i className="bi bi-search"></i>
               </span>
             </div>
-            <input placeholder="Cari..." type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+            <input onChange={e => setCari(e.target.value)} defaultValue={cari} onKeyPress={e => submitCari(e)} placeholder="Cari..." type="text" className="form-control" aria-label="Cari..." />
           </div>
         </section>
 
@@ -239,7 +280,13 @@ function Home({ kategori, merchant, posts, propinsi }) {
 
 export async function getStaticProps() {
   const kategori      = await getAllKategori()
-  const merchant      = await getAllMerchant()
+
+  const merBody       = {
+    max: 10,
+    page: 0
+  }
+  const merchant      = await getAllMerchant(merBody)
+
   const posts         = await getLatestPosts()
 
   const propinsi      = await getPropinsi()

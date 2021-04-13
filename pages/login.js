@@ -48,7 +48,6 @@ export default function Login() {
       })
 
       if(req.success) {
-        localStorage.setItem('session', JSON.stringify({token: req.metadata}))
         await mutateUser(req)
       }
       else {

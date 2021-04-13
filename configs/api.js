@@ -67,10 +67,9 @@ export async function getTags() {
   return res.data
 }
 
-export async function getAllMerchant() {
-  const res = await axios.post(API_MERCHANT)
-  const { result } = res.data
-  return result
+export async function getAllMerchant(body) {
+  const res = await axios.post(API_MERCHANT, body)
+  return res.data
 }
 
 export async function getOneMerchant(id) {

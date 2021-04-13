@@ -57,7 +57,7 @@ function Baca({ detail, tags }) {
                   <div className="tags mb-4">
                     {
                       tags.map((item, key) => (
-                        <Link key={`tt-${key}`} href={`/tags?id=${item.term_id}`}><span className="badge bg-secondary p-2 m-1">{item.name}</span></Link>
+                        <Link key={`tt-${key}`} href={`/tags/${item.term_id}`}><span className="badge bg-secondary p-2 m-1 cursor-pointer">{item.name}</span></Link>
                       ))
                     }
                   </div>
@@ -97,18 +97,7 @@ function Baca({ detail, tags }) {
   )
 }
 
-export async function getStaticPaths() {
-
-  const res = await getLatestPosts()
-
-  const paths = res.map((row) => ({
-    params: { id: row.id.toString() }
-  }))
-
-  return { paths, fallback: false }
-}
-
-export async function getStaticProps({params}) {
+export async function getServerSideProps({params}) {
 
   const tags = await getAllTags(params.id)
 
@@ -117,7 +106,7 @@ export async function getStaticProps({params}) {
 
   if(!detail) {
     return {
-      norFound: true
+      notFound: true
     }
   }
 

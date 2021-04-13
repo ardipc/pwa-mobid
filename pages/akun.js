@@ -15,11 +15,34 @@ import Footer from '../components/footer'
 import NavBottom from '../components/nav-bottom'
 
 import fetchJson from '../lib/fetchJson'
+import withSession from '../lib/session'
 import useUser from '../lib/useUser'
 
-export default function Akun() {
+import { getMyFavorit } from '../configs/api'
 
-  const { user, mutateUser } = useUser({ redirectTo: '/login' })
+export const getServerSideProps = withSession(async ({req, res}) => {
+
+  const user = req.session.get('user')
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    }
+  }
+
+  const favorit = await getMyFavorit(user.metadata)
+
+  return {
+    props: { user, favorit }
+  }
+})
+
+export default function Akun({ user, favorit }) {
+
+  const { mutateUser } = useUser({ redirectTo: '/login' })
 
   const router = useRouter()
   const { asPath } = router
@@ -27,36 +50,31 @@ export default function Akun() {
   const [info, setInfo] = useState({});
   const [load, setLoad] = useState(true)
 
-  useEffect(() => {
-    const session = localStorage.getItem('session');
-    if(session) {
-      const author = JSON.parse(session).token;
-      const configs = {
-        headers: {
-          'X-ACCESS-TOKEN': author
-        }
-      };
+  const fetchUser = (token) => {
+    const configs = {
+      headers: {
+        'X-ACCESS-TOKEN': token
+      }
+    };
 
-      axios.get(API_GET_PROFILE, configs).then(res => {
-        if(res.status === 200) {
-          const { result } = res.data
-          setInfo(result);
-          setLoad(false);
-        }
-      });
-    }
+    axios.get(API_GET_PROFILE, configs).then(res => {
+      if(res.status === 200) {
+        const { result } = res.data
+        setInfo(result);
+        setLoad(false);
+      }
+    });
+  }
+
+  useEffect(() => {
+    fetchUser(user.metadata)
   }, [])
 
   const btnLogout = async (e) => {
-    localStorage.removeItem('session');
     await mutateUser(fetchJson('/api/logout'))
   }
 
   const handleClose = () => setLoad(false);
-
-  if (!user || user.isLoggedIn === false) {
-    return <p>loading...</p>
-  }
 
   return (
     <>
@@ -100,7 +118,7 @@ export default function Akun() {
           				<a className="text-decoration-none" href="#">{info.fullname}</a>
           			</div>
           			<span>
-          				<a className="text-decoration-none fc-success" href="#"><span>{info.email}</span></a>
+          				<a className="text-decoration-none fc-success" href="#"><span>{info.phone}</span></a>
           			</span>
           		</div>
 
@@ -108,20 +126,24 @@ export default function Akun() {
           			<ul className="twPc-Arrange">
           				<li className="twPc-ArrangeSizeFit">
           					<a className="text-decoration-none" href="#" title="9.840 Tweet">
-          						<span className="twPc-StatLabel twPc-block">Tweets</span>
-          						<span className="twPc-StatValue">9.840</span>
+          						<span className="twPc-StatLabel twPc-block">Favorit</span>
+          						<span className="twPc-StatValue">{favorit.length}</span>
           					</a>
           				</li>
           				<li className="twPc-ArrangeSizeFit">
           					<a className="text-decoration-none" href="#" title="885 Following">
-          						<span className="twPc-StatLabel twPc-block">Following</span>
-          						<span className="twPc-StatValue">885</span>
+          						<span className="twPc-StatLabel twPc-block">Verified</span>
+          						<span className="twPc-StatValue">
+                        <i className="bi bi-check" style={{color: 'green'}}></i>
+                      </span>
           					</a>
           				</li>
           				<li className="twPc-ArrangeSizeFit">
           					<a className="text-decoration-none" href="#" title="1.810 Followers">
-          						<span className="twPc-StatLabel twPc-block">Followers</span>
-          						<span className="twPc-StatValue">1.810</span>
+          						<span className="twPc-StatLabel twPc-block">Online</span>
+          						<span className="twPc-StatValue">
+                        <i className="bi bi-check" style={{color: 'green'}}></i>
+                      </span>
           					</a>
           				</li>
           			</ul>

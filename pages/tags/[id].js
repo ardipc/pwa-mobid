@@ -1,36 +1,40 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
-import Heading from '../components/heading'
-import Footer from '../components/footer'
-import NavBottom from '../components/nav-bottom'
+import Heading from '../../components/heading'
+import Footer from '../../components/footer'
+import NavBottom from '../../components/nav-bottom'
 
 import { Spinner } from 'react-bootstrap'
 
 import { useRouter } from 'next/router'
-import Berita from '../components/berita'
+import Berita from '../../components/berita'
+
+import withSession from '../../lib/session'
+import useUser from '../../lib/useUser'
 
 import { useState, useEffect } from 'react'
 
 import {
   getTags,
   getPostByTags
-} from '../configs/api'
+} from '../../configs/api'
 
-function Tags() {
+export const getServerSideProps = async ({params}) => {
+  const posts = await getPostByTags(params.id)
+
+  return {
+    props: { posts }
+  }
+}
+
+function Tags({ posts }) {
 
   const router = useRouter()
   const { asPath } = router
-  const { id } = router.query
 
-  const [load, setLoad] = useState(true)
-  const [news, setNews] = useState([])
-
-  useEffect(async () => {
-    const rows = await getPostByTags(id)
-    setNews(rows)
-    setLoad(false)
-  }, [])
+  const [load, setLoad] = useState(false)
+  const [news, setNews] = useState(posts)
 
   return (
     <>
@@ -120,12 +124,6 @@ function Tags() {
 
   </>
   )
-}
-
-export async function getServerSideProps() {
-  return {
-    props: {}
-  }
 }
 
 export default Tags;

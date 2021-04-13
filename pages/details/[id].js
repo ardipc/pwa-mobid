@@ -216,27 +216,10 @@ function Detail({ detail }) {
   )
 }
 
-export async function getStaticPaths() {
+export async function getServerSideProps({params}) {
 
-  const res = await getAllMerchant()
-
-  const paths = res.map((row) => ({
-    params: { id: row.id }
-  }))
-
-  return { paths, fallback: false }
-}
-
-export async function getStaticProps({params}) {
-
-  const res = await getOneMerchant(params.id)
-  const detail = res;
-
-  if(!detail) {
-    return {
-      notFound: true
-    }
-  }
+  const request = await getOneMerchant(params.id)
+  const detail = request;
 
   return {
     props: {
