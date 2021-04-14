@@ -32,11 +32,10 @@ export default function Login() {
   const [msg, setMsg] = useState('')
 
   const btnLogin = async (via) => {
-
     if(user) {
-      const req = await userOTPRequest(user, via)
       setVia(false)
       setShow(true)
+      userOTPRequest(user, via)
     }
     else {
       console.log('Nomor kosong')

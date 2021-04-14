@@ -5,16 +5,43 @@ import Image from 'next/image'
 import Heading from '../../components/heading'
 import Footer from '../../components/footer'
 
+import Berita from '../../components/berita'
+
 import { useState } from 'react'
 import moment from 'moment-timezone'
 
 import {
   getLatestPosts,
   getOnePosts,
-  getAllTags
+  getAllTags,
+  getKategoriById,
+  getPostTerkait
 } from '../../configs/api'
 
-function Baca({ detail, tags }) {
+export async function getServerSideProps({params}) {
+
+  const detail    = await getOnePosts(params.id)
+  const tags      = await getAllTags(params.id)
+  const catIds    = await getKategoriById(detail.categories)
+  const otherPost = await getPostTerkait(detail.categories[0])
+
+  if(!detail) {
+    return {
+      notFound: true
+    }
+  }
+
+  return {
+    props: {
+      detail,
+      tags,
+      categories: catIds,
+      otherPost
+    }
+  }
+}
+
+function Baca({ detail, tags, categories, otherPost }) {
 
   return (
     <>
@@ -32,8 +59,6 @@ function Baca({ detail, tags }) {
                   <Link href="/">
                     <i style={{color: 'white'}} className="bi bi-arrow-left back-top cursor-pointer"></i>
                   </Link>
-                  <i style={{color: 'white'}} className="bi bi-heart favorit-top cursor-pointer"></i>
-                  <i style={{color: 'white'}} className="bi bi-share share-top cursor-pointer"></i>
 
                   <div className={`bg-info responsive`} style={{width: '100%', height: '300px', marginTop: '-24px', backgroundImage: `url('${detail.jetpack_featured_media_url}')`}}></div>
 
@@ -46,7 +71,12 @@ function Baca({ detail, tags }) {
 
                   <div className="rating">
                     <p className="mt-2">
-                      <span>{moment(detail.date_gmt).format('LLL')}</span>
+                      {categories.map((item,key) => (
+                        <span key={`catt-${key}`} className="badge bg-primary mx-1">{item}</span>
+                      ))}
+                      <span>
+                        {'  '}{moment(detail.date_gmt).format('LLL')}
+                      </span>
                     </p>
                   </div>
 
@@ -63,13 +93,18 @@ function Baca({ detail, tags }) {
                   </div>
 
                   <div className="action row text-center">
-                    <div className="col">
-                      <div className="d-grid gap-2">
-                        <button className="btn btn-outline-primary">
-                          <i className="bi bi-heart"></i> Suka
-                        </button>
+
+                    {
+                      /*
+                      <div className="col">
+                        <div className="d-grid gap-2">
+                          <button className="btn btn-outline-primary">
+                            <i className="bi bi-heart"></i> Suka
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                      */
+                    }
 
                     <div className="col">
                       <div className="d-grid gap-2">
@@ -89,33 +124,26 @@ function Baca({ detail, tags }) {
 
         <div className="divider"></div>
 
+        <section className="bg-white p-3">
+          <p className="h6 mb-3">
+            Berita Terkait
+          </p>
+
+          {
+            otherPost.map((item, i) => (
+              <Berita item={item} key={`ber-${i}`} />
+            ))
+          }
+        </section>
+
+        <div className="divider"></div>
+
         <Footer />
 
       </div>
 
   </>
   )
-}
-
-export async function getServerSideProps({params}) {
-
-  const tags = await getAllTags(params.id)
-
-  const res = await getOnePosts(params.id)
-  const detail = res;
-
-  if(!detail) {
-    return {
-      notFound: true
-    }
-  }
-
-  return {
-    props: {
-      detail,
-      tags
-    }
-  }
 }
 
 export default Baca;

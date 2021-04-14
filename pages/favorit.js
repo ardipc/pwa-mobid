@@ -40,6 +40,7 @@ export default function Favorit({ user, posts }) {
   const router = useRouter()
   const { asPath } = router
 
+  const [cari, setCari] = useState('')
   const [info, setInfo] = useState({})
   const [load, setLoad] = useState(true)
   const [merchant, setMerchant] = useState([])
@@ -62,6 +63,15 @@ export default function Favorit({ user, posts }) {
     }
   }
 
+  const submitCari = async (e) => {
+    if(e.key === "Enter") {
+      const regex = new RegExp(cari);
+      const rows = await getMyFavorit(user.metadata)
+      const filter = rows.filter(item => regex.test(item.name))
+      setMerchant(filter)
+    }
+  }
+
   return (
     <>
 
@@ -75,18 +85,6 @@ export default function Favorit({ user, posts }) {
           <p style={{color: '#0d6efd', fontWeight: 'bold'}}>F A V O R I T</p>
         </section>
 
-        <section className="px-3 pt-3">
-          <div className="scrolling-wrapper row flex-row flex-nowrap">
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Semua</span></div>
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Bengkel Mobil</span></div>
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Cuci Mobil</span></div>
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Pom Bensin</span></div>
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Cutting</span></div>
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Dealer</span></div>
-            <div className="col px-0"><span className="badge bg-primary p-2 mx-1">Velg</span></div>
-          </div>
-        </section>
-
         <section className="p-3">
           <div className="input-group">
             <div className="input-group-prepend">
@@ -94,13 +92,16 @@ export default function Favorit({ user, posts }) {
                 <i className="bi bi-search"></i>
               </span>
             </div>
-            <input placeholder="Cari..." type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+            <input onChange={e => setCari(e.target.value)} defaultValue={cari} onKeyPress={e => submitCari(e)} placeholder="Cari..." type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
           </div>
         </section>
 
         <div className="divider"></div>
 
         <section className="bg-white p-3">
+          <p className="h6 mb-3">
+            Explore
+          </p>
 
           {
             merchant.map((item, i) => (

@@ -11,12 +11,19 @@ import { Modal, ListGroup } from 'react-bootstrap'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
+import { toast } from 'react-toastify'
+
+import useUser from '../lib/useUser'
+
 import {
   getAllMerchant,
-  getAllKonsultasi
+  getAllKonsultasi,
+  addBookmark
 } from '../configs/api'
 
 function Konsultasi({ konsultasi, merchant }) {
+
+  const { user } = useUser()
 
   const indikasies = ["Mesin mati total", "Mesin bunyi kretek-kretek", "Mesin keluar asap", "Mesin keluar oli"]
 
@@ -36,6 +43,16 @@ function Konsultasi({ konsultasi, merchant }) {
     setCek(item)
   }
 
+  const addFav = async (id) => {
+    if(user.isLoggedIn) {
+      const req = await addBookmark(user.metadata, id)
+      toast.info(req.message)
+    }
+    else {
+      router.push('/login')
+    }
+  }
+
   return (
     <>
 
@@ -46,7 +63,7 @@ function Konsultasi({ konsultasi, merchant }) {
       <div className="pb-5 mobile">
 
         <section className="text-center pt-4">
-          <p style={{color: '#0d6efd', fontWeight: 'bold'}}>K O N S U L T A S I</p>
+          <p style={{color: '#0d6efd', fontWeight: 'bold'}}>D I A G N O S A</p>
         </section>
 
         <div className="divider"></div>
@@ -89,12 +106,11 @@ function Konsultasi({ konsultasi, merchant }) {
         <section className="bg-white p-3">
           <p className="h6 mb-3">
             Rekomendasi
-            <a className="float-end text-decoration-none font-weight-normal">Lainnya</a>
           </p>
 
           {
             mer.map((item, i) => (
-              <Explore item={item} key={`ex-${i}`} />
+              <Explore item={item} key={`ex-${i}`} actions={{addFav}} />
             ))
           }
 

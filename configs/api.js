@@ -20,7 +20,8 @@ import {
   API_BOOKMARK,
   API_BOOKMARK_DEL,
 
-  API_POSTS_TAGS
+  API_POSTS_TAGS,
+  API_CATEGORIES
 } from './rest'
 
 export async function userOTPRequest(nohp, via) {
@@ -99,9 +100,26 @@ export async function getOnePosts(id) {
   return res.data
 }
 
-export async function getAllKategoriPost() {
-  const res = await axios.get(API_POSTS_CATEGORY)
+export async function getPostTerkait(catId) {
+  const res = await axios.get(`${API_POSTS_ONE}?categories=${catId}&page=1&per_page=4`)
   return res.data
+}
+
+export async function getAllKategoriPost() {
+  const res = await axios.get(API_POSTS_CATEGORY+'?parent=0')
+  return res.data
+}
+
+export async function getKategoriById(ids) {
+  const temp = []
+  for(var i=0; i<ids.length; i++) {
+    const res = await axios.get(API_POSTS_CATEGORY+'/'+ids[i])
+    if(!res.data.hasOwnProperty('code')) {
+      temp.push(res.data.name)
+    }
+  }
+
+  return temp
 }
 
 export async function getMyFavorit(kunci) {
