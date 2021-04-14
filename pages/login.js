@@ -22,16 +22,20 @@ export default function Login() {
   })
 
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const [via, setVia] = useState(false);
+
+  const handleClose = () => { setShow(false); setVia(false); }
   const handleShow = () => setShow(true);
 
   const [user, setUser] = useState('')
   const [otp, setOtp] = useState('')
   const [msg, setMsg] = useState('')
 
-  const btnLogin = async (e) => {
+  const btnLogin = async (via) => {
+
     if(user) {
-      const req = await userOTPRequest(user)
+      const req = await userOTPRequest(user, via)
+      setVia(false)
       setShow(true)
     }
     else {
@@ -89,11 +93,23 @@ export default function Login() {
 
           <div className="text-center">
             <div className="d-grid gap-2 mb-3">
-              <button onClick={btnLogin} className="btn btn-block btn-outline-primary">Lanjutkan</button>
+              <button onClick={e => setVia(true)} className="btn btn-block btn-outline-primary">Lanjutkan</button>
             </div>
 
             <p>Belum punya akun? <Link href="/daftar"><a className="text-decoration-none">Daftar</a></Link></p>
           </div>
+
+          <Modal show={via} onHide={handleClose} centered>
+            <Modal.Body>
+              <h5 className="mt-2 mb-4">Pilih Metode Verifikasi</h5>
+              <p>Pilih salah satu metode dibawah ini untuk mendapatkan kode verifikasi</p>
+
+              <div className="d-grid gap-2">
+                <button onClick={e => btnLogin('wa')} className="btn btn-block btn-outline-primary"><i className="bi bi-whatsapp"></i> Whatsapp</button>
+                <button onClick={e => btnLogin('sms')} className="btn btn-block btn-outline-primary"><i className="bi bi-envelope"></i> SMS</button>
+              </div>
+            </Modal.Body>
+          </Modal>
 
           <Modal show={show} onHide={handleClose} centered>
             <Modal.Body>

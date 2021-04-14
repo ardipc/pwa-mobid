@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 const menus = [
   {id: 1, title: 'Beranda', icon: 'bi-house', link: '/'},
-  {id: 2, title: 'Konsultasi', icon: 'bi-gear', link: '/konsultasi'},
+  {id: 2, title: 'Diagnosa', icon: 'bi-gear', link: '/konsultasi'},
   {id: 3, title: 'Berita', icon: 'bi-newspaper', link: '/berita'},
   {id: 4, title: 'Favorit', icon: 'bi-heart', link: '/favorit'},
   {id: 5, title: 'Profil', icon: 'bi-person', link: '/akun'},

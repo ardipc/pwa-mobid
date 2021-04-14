@@ -23,10 +23,10 @@ import {
   API_POSTS_TAGS
 } from './rest'
 
-export async function userOTPRequest(nohp) {
+export async function userOTPRequest(nohp, via) {
   const json = {
     nohp: nohp,
-    via: 'sms'
+    via: via
   }
 
   const res = await axios.post(API_OTP_REQUEST, json)
@@ -111,7 +111,7 @@ export async function getMyFavorit(kunci) {
     }
   }
   const res = await axios.get(API_MY_FAVORIT, options)
-  return res.data.result
+  return res.data.metadata.count > 0 ? res.data.result : []
 }
 
 export async function getAllTags(id) {
