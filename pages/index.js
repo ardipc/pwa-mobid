@@ -25,10 +25,12 @@ import {
 } from '../configs/api'
 
 import useUser from '../lib/useUser'
+import usePosition from '../lib/usePosition'
 
 function Home({ kategori, merchant, posts, propinsi }) {
 
   const { user } = useUser()
+  const {latitude, longitude, error} = usePosition();
 
   const [kotaList, setKotaList] = useState([]);
 
@@ -43,6 +45,11 @@ function Home({ kategori, merchant, posts, propinsi }) {
   const [mer, setMer] = useState(merchant.result);
 
   useEffect(() => {
+    if(latitude && longitude) {
+      const pos = {lat: latitude, lng: longitude}
+      localStorage.setItem('position', JSON.stringify(pos))
+    }
+
     setProp(localStorage.getItem('propinsi') ? JSON.parse(localStorage.getItem('propinsi')) : '')
     setKota(localStorage.getItem('kota') ? JSON.parse(localStorage.getItem('kota')) : '')
 
@@ -50,13 +57,6 @@ function Home({ kategori, merchant, posts, propinsi }) {
       const parse = JSON.parse(localStorage.getItem('kota'))
       const filter = mer.filter(row => row.kota === parse.nama)
       setMer(filter)
-    }
-
-    if('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(d => {
-        const pos = {lat: d.coords.latitude, lng: d.coords.longitude}
-        localStorage.setItem('position', JSON.stringify(pos))
-      })
     }
   }, [])
 

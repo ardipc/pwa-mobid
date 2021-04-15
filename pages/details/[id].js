@@ -51,9 +51,12 @@ function Detail({ detail }) {
   const [img, setImg] = useState(detail ? detail.imageUrl : '')
 
   useEffect(() => {
-    const { lat, lng } = JSON.parse(localStorage.getItem('position'))
-    const dis = distance(lat, lng, detail.latitude, detail.longitude)
-    setDis(dis)
+    const position = localStorage.getItem('position')
+    if(position) {
+      const { lat, lng } = JSON.parse(position)
+      const dis = distance(lat, lng, detail.latitude, detail.longitude)
+      setDis(dis)
+    }
   }, [])
 
   const addFav = async (id) => {
@@ -125,9 +128,13 @@ function Detail({ detail }) {
 
                   <div className="mb-2 mt-3">
                     <ul className="list-group list-group-flush">
-                      <li className="list-group-item">
-                        <i className="bi bi-map"></i> {dis}
-                      </li>
+                      {
+                        dis !== 0 ?
+                          <li className="list-group-item">
+                            <i className="bi bi-map"></i> {dis}
+                          </li>
+                        : null
+                      }
                       <li className="list-group-item">
                         <i className="bi bi-geo"></i> {detail ? detail.kota : null}
                       </li>
