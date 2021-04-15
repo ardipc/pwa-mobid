@@ -9,7 +9,7 @@ import Explore from '../components/explore'
 import { Modal, ListGroup } from 'react-bootstrap'
 
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { toast } from 'react-toastify'
 
@@ -21,11 +21,25 @@ import {
   addBookmark
 } from '../configs/api'
 
+export async function getStaticProps() {
+  const konsultasi    = await getAllKonsultasi()
+
+  const merBody = {
+    page: 0,
+    max: 3
+  }
+  const merchant      = await getAllMerchant(merBody)
+
+  return {
+    props: { konsultasi, merchant: merchant.result }
+  }
+}
+
 function Konsultasi({ konsultasi, merchant }) {
 
   const { user } = useUser()
 
-  const indikasies = ["Mesin mati total", "Mesin bunyi kretek-kretek", "Mesin keluar asap", "Mesin keluar oli"]
+  const [indikasi, setIndikasi] = useState([])
 
   const [mer, setMer] = useState(merchant)
 
@@ -38,9 +52,11 @@ function Konsultasi({ konsultasi, merchant }) {
   const router = useRouter()
   const { asPath } = router
 
-  const openIndikasi = (item) => {
+  const openIndikasi = async (item) => {
     setShow(true)
     setCek(item)
+    const req = await getAllKonsultasi(item.id)
+    setIndikasi(req)
   }
 
   const addFav = async (id) => {
@@ -51,6 +67,10 @@ function Konsultasi({ konsultasi, merchant }) {
     else {
       router.push('/login')
     }
+  }
+
+  const fetchKonsultasiDetail = async (id) => {
+
   }
 
   return (
@@ -75,15 +95,17 @@ function Konsultasi({ konsultasi, merchant }) {
             <Modal.Body>
               <h6 className="mb-3">Indikasi Kerusakan {cek.nama}</h6>
               <div className="row">
-                {
-                  indikasies.map((item, i) => (
-                    <div key={`bt-${i}`} className="col-12 m-1">
-                      <Link href='/baca/9837'>
-                        <button className="btn btn-outline-dark">{item}</button>
-                      </Link>
-                    </div>
-                  ))
-                }
+                <div className="overflow-auto" style={{height: '200px'}}>
+                  {
+                    indikasi.map((item, i) => (
+                      <div key={`bt-${i}`} className="col-12 m-1">
+                        <Link href={item.id_artikel.split(':')[0] === 'tag' ? `/tags/${item.id_artikel.split(':')[1]}` : `/baca/${item.id_artikel}`}>
+                          <button className="btn btn-outline-primary">{item.nama}</button>
+                        </Link>
+                      </div>
+                    ))
+                  }
+                </div>
               </div>
             </Modal.Body>
           </Modal>
@@ -125,20 +147,5 @@ function Konsultasi({ konsultasi, merchant }) {
   </>
   )
 }
-
-export async function getStaticProps() {
-  const konsultasi    = await getAllKonsultasi()
-
-  const merBody = {
-    page: 0,
-    max: 3
-  }
-  const merchant      = await getAllMerchant(merBody)
-
-  return {
-    props: { konsultasi, merchant: merchant.result }
-  }
-}
-
 
 export default Konsultasi;

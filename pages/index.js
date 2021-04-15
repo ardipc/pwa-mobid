@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import dynamic from 'next/dynamic'
 
 import Heading from '../components/heading'
 import Footer from '../components/footer'
@@ -139,6 +140,11 @@ function Home({ kategori, merchant, posts, propinsi }) {
     }
   }
 
+  const MySlider = dynamic(
+    () => import('../components/mySlider'),
+    { ssr: false }
+  )
+
   return (
     <>
 
@@ -222,6 +228,10 @@ function Home({ kategori, merchant, posts, propinsi }) {
         </section>
 
         <div className="divider"></div>
+
+        <section className="bg-white p-3">
+          <MySlider sliders={mer} />
+        </section>
 
         <section className="bg-white p-3">
           <p className="h6 mb-3">

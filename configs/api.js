@@ -21,7 +21,9 @@ import {
   API_BOOKMARK_DEL,
 
   API_POSTS_TAGS,
-  API_CATEGORIES
+  API_CATEGORIES,
+
+  API_GET_PROFILE
 } from './rest'
 
 export async function userOTPRequest(nohp, via) {
@@ -79,10 +81,10 @@ export async function getOneMerchant(id) {
   return result
 }
 
-export async function getAllKonsultasi() {
-  const res = await axios.post(API_KONSULTASI)
-  const { result } = res.data
-  return result
+export async function getAllKonsultasi(id = "0") {
+  const res = await axios.post(API_KONSULTASI+"/"+id)
+  const { result, metadata } = res.data
+  return metadata.count > 0 ? result : []
 }
 
 export async function getLatestPosts() {
@@ -154,5 +156,15 @@ export async function delBookmark(token, id) {
     }
   }
   const res = await axios.get(`${API_BOOKMARK_DEL}/${id}`, options)
+  return res.data
+}
+
+export async function updateProfile(token, form) {
+  const options = {
+    headers: {
+      'X-ACCESS-TOKEN': token
+    }
+  }
+  const res = await axios.post(`${API_GET_PROFILE}/update`, form, options)
   return res.data
 }

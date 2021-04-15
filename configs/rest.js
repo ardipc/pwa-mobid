@@ -8,7 +8,7 @@ export const API_KOTA               = `${API_BASE}/p/wilayah/kota`
 
 export const API_KATEGORI           = `${API_BASE}/p/merchant/category`
 export const API_MERCHANT           = `${API_BASE}/p/merchant`
-export const API_KONSULTASI         = `${API_BASE}/p/konsultasi/0`
+export const API_KONSULTASI         = `${API_BASE}/p/konsultasi`
 
 export const API_GET_PROFILE        = `${API_BASE}/p/user`
 

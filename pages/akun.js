@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react'
 
 import { API_GET_PROFILE } from '../configs/rest'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 import Router, { useRouter } from 'next/router'
 
@@ -18,7 +19,7 @@ import fetchJson from '../lib/fetchJson'
 import withSession from '../lib/session'
 import useUser from '../lib/useUser'
 
-import { getMyFavorit } from '../configs/api'
+import { getMyFavorit, updateProfile } from '../configs/api'
 
 export const getServerSideProps = withSession(async ({req, res}) => {
 
@@ -76,6 +77,27 @@ export default function Akun({ user, favorit }) {
 
   const handleClose = () => setLoad(false);
 
+  const simpanAkun = async (e) => {
+    let form = {
+      fullname: info.fullname,
+      phone: info.phone,
+      email: info.email,
+      address: info.address
+    }
+
+    const req = await updateProfile(user.metadata, form)
+    if(req.success) {
+      toast.info(`Akun tersimpan`)
+    }
+  }
+
+  const handleInput = (e) => {
+    const { name, value } = e.target
+    const copy = {...info}
+    copy[name] = value
+    setInfo(copy)
+  }
+
   return (
     <>
 
@@ -102,7 +124,7 @@ export default function Akun({ user, favorit }) {
                 </a>
           		</div>
 
-          		<a title="Mert S. Kaplan" href="#" className="twPc-avatarLink">
+          		<a title="Avatar" href="#" className="twPc-avatarLink">
                 {
                   load ?
                     <div style={{width: '72px', height: '72px'}} className="text-center">
@@ -162,34 +184,34 @@ export default function Akun({ user, favorit }) {
             <div className="mb-3">
               <div className="input-group input-group-sm">
                 <span className="input-group-text"><i className="bi bi-person"></i></span>
-                <input defaultValue={info.fullname} type="text" className="form-control" placeholder="Nama" aria-label="Nama" aria-describedby="basic-addon1" />
+                <input defaultValue={info.fullname} onChange={e => handleInput(e)} name="fullname" type="text" className="form-control" placeholder="Nama" aria-label="Nama" aria-describedby="basic-addon1" />
               </div>
               <div className="form-text">Nama kamu siapa nih.</div>
             </div>
             <div className="mb-3">
               <div className="input-group input-group-sm">
                 <span className="input-group-text"><i className="bi bi-telephone"></i></span>
-                <input defaultValue={info.phone} type="number" className="form-control" placeholder="Telepon" aria-label="Telepon" aria-describedby="basic-addon1" />
+                <input defaultValue={info.phone} onChange={e => handleInput(e)} name="phone" type="number" className="form-control" placeholder="Telepon" aria-label="Telepon" aria-describedby="basic-addon1" />
               </div>
               <div className="form-text">Nomor telepon kamu.</div>
             </div>
             <div className="mb-3">
               <div className="input-group input-group-sm">
                 <span className="input-group-text"><i className="bi bi-envelope"></i></span>
-                <input defaultValue={info.email} type="email" className="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" />
+                <input defaultValue={info.email} onChange={e => handleInput(e)} name="email" type="email" className="form-control" placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" />
               </div>
               <div className="form-text">Alamat email kamu.</div>
             </div>
             <div className="mb-3">
               <div className="input-group input-group-sm">
                 <span className="input-group-text"><i className="bi bi-geo-alt"></i></span>
-                <input defaultValue={info.address} type="text" className="form-control" placeholder="Alamat" aria-label="Alamat" aria-describedby="basic-addon1" />
+                <input defaultValue={info.address} onChange={e => handleInput(e)} name="address" type="text" className="form-control" placeholder="Alamat" aria-label="Alamat" aria-describedby="basic-addon1" />
               </div>
               <div className="form-text">Kamu tinggal dimana.</div>
             </div>
 
             <div className="d-grid gap-2 mb-2">
-              <button type="button" className="btn btn-outline-primary">Simpan Akun</button>
+              <button onClick={e => simpanAkun(e)} type="button" className="btn btn-outline-primary">Simpan Akun</button>
             </div>
           </form>
 
