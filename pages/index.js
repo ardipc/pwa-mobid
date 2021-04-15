@@ -51,6 +51,13 @@ function Home({ kategori, merchant, posts, propinsi }) {
       const filter = mer.filter(row => row.kota === parse.nama)
       setMer(filter)
     }
+
+    if('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(d => {
+        const pos = {lat: d.coords.latitude, lng: d.coords.longitude}
+        localStorage.setItem('position', JSON.stringify(pos))
+      })
+    }
   }, [])
 
   const router = useRouter()

@@ -6,10 +6,14 @@ import Footer from '../../components/footer'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
+
+import useUser from '../../lib/useUser'
 
 import {
   getAllMerchant,
-  getOneMerchant
+  getOneMerchant,
+  addBookmark
 } from '../../configs/api'
 
 function changeToWA(number) {
@@ -17,9 +21,50 @@ function changeToWA(number) {
   return nol === "0" ? `62${number.substring(1)}` : number
 }
 
+function distance(lat1, lon1, lat2, lon2, unit = "K") {
+  if ((lat1 == lat2) && (lon1 == lon2)) {
+    return 0;
+  }
+  else {
+    var radlat1 = Math.PI * lat1/180;
+    var radlat2 = Math.PI * lat2/180;
+    var theta = lon1-lon2;
+    var radtheta = Math.PI * theta/180;
+    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    if (dist > 1) {
+        dist = 1;
+    }
+    dist = Math.acos(dist);
+    dist = dist * 180/Math.PI;
+    dist = dist * 60 * 1.1515;
+    if (unit=="K") { dist = dist * 1.609344 }
+    if (unit=="N") { dist = dist * 0.8684 }
+    return `${dist.toFixed(2)} KM`;
+  }
+}
+
 function Detail({ detail }) {
 
+  const { user } = useUser()
+
+  const [dis, setDis] = useState(0)
   const [img, setImg] = useState(detail ? detail.imageUrl : '')
+
+  useEffect(() => {
+    const { lat, lng } = JSON.parse(localStorage.getItem('position'))
+    const dis = distance(lat, lng, detail.latitude, detail.longitude)
+    setDis(dis)
+  }, [])
+
+  const addFav = async (id) => {
+    if(user.isLoggedIn) {
+      const req = await addBookmark(user.metadata, id)
+      toast.info(req.message)
+    }
+    else {
+      router.push('/login')
+    }
+  }
 
   return (
     <>
@@ -35,8 +80,6 @@ function Detail({ detail }) {
                   <Link href="/">
                     <i style={{color: 'white'}} className="bi bi-arrow-left back-top cursor-pointer"></i>
                   </Link>
-                  <i style={{color: 'white'}} className="bi bi-heart favorit-top cursor-pointer"></i>
-                  <i style={{color: 'white'}} className="bi bi-share share-top cursor-pointer"></i>
                   <div className={`bg-info responsive`} style={{width: '100%', height: '300px', marginTop: '-24px', backgroundImage: `url('${img}')`}}></div>
                 </div>
 
@@ -64,6 +107,8 @@ function Detail({ detail }) {
                     </div>
                   </div>
 
+                  <i onClick={e => addFav(detail.id)} className={`bi bi-heart float-end cursor-pointer`} style={{color: '#ff6961'}}></i>
+
                   <h5 style={{ fontSize: '18px' }}>
                      {detail ? detail.name : null}
                   </h5>
@@ -80,6 +125,9 @@ function Detail({ detail }) {
 
                   <div className="mb-2 mt-3">
                     <ul className="list-group list-group-flush">
+                      <li className="list-group-item">
+                        <i className="bi bi-map"></i> {dis}
+                      </li>
                       <li className="list-group-item">
                         <i className="bi bi-geo"></i> {detail ? detail.kota : null}
                       </li>
@@ -99,37 +147,51 @@ function Detail({ detail }) {
                   </div>
 
                   <div className="action row text-center">
-                    <div className="col">
-                      <div className="d-grid gap-2">
-                        <a href={`tel:${detail.phone}`} target="_blank">
-                          <button className="btn btn-outline-primary">
-                            <i className="bi bi-telephone"></i> Telepon
-                          </button>
-                        </a>
-                      </div>
-                    </div>
-                    <div className="col">
-                      <div className="d-grid gap-2">
-                        <a href={`https://wa.me/${changeToWA(detail.whatsapp)}/?text=Tanya%20Dong`} target="_blank">
-                          <button className="btn btn-outline-primary">
-                            <i className="bi bi-whatsapp"></i> Whatsapp
-                          </button>
-                        </a>
-                      </div>
-                    </div>
-                    <div className="col">
-                      <div className="d-grid gap-2">
-                        {
-                          detail ?
-                          <a href={`https://maps.google.com/?q=${detail.latitude},${detail.longitude}`} target="_blank">
-                            <button className="btn btn-outline-primary">
-                              <i className="bi bi-box-arrow-up-right"></i> Petunjuk
+                    {
+                      detail.phone ?
+                        <div className="col">
+                          <div className="d-grid gap-2">
+                            <a href={`tel:${detail.phone}`} target="_blank">
+                              <button className="btn btn-outline-primary">
+                                <i className="bi bi-telephone"></i> Telepon
                               </button>
                             </a>
-                            : null
-                        }
-                      </div>
-                    </div>
+                          </div>
+                        </div>
+                      : null
+                    }
+
+                    {
+                      detail.whatsapp ?
+                        <div className="col">
+                          <div className="d-grid gap-2">
+                            <a href={`https://wa.me/${changeToWA(detail.whatsapp)}/?text=Tanya%20Dong`} target="_blank">
+                              <button className="btn btn-outline-primary">
+                                <i className="bi bi-whatsapp"></i> Whatsapp
+                              </button>
+                            </a>
+                          </div>
+                        </div>
+                      : null
+                    }
+
+                    {
+                      detail.latitude && detail.longitude ?
+                        <div className="col">
+                          <div className="d-grid gap-2">
+                            {
+                              detail ?
+                              <a href={`https://maps.google.com/?q=${detail.latitude},${detail.longitude}`} target="_blank">
+                                <button className="btn btn-outline-primary">
+                                  <i className="bi bi-box-arrow-up-right"></i> Petunjuk
+                                  </button>
+                              </a>
+                              : null
+                            }
+                          </div>
+                        </div>
+                      : null
+                    }
                   </div>
 
                 </div>
