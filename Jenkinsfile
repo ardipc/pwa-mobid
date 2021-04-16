@@ -3,6 +3,7 @@ pipeline {
     stages {
         stage('build') {
             steps {
+                sh 'date'
                 sh 'npm --version'
                 sh 'node --version'
                 sh 'docker --version'
