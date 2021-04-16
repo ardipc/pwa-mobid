@@ -7,6 +7,7 @@ pipeline {
                 sh 'node --version'
                 sh 'docker --version'
                 sh 'printenv'
+                sh 'echo $GIT_BRANCH'
             }
         }
     }
