@@ -6,6 +6,7 @@ pipeline {
                 sh 'npm --version'
                 sh 'node --version'
                 sh 'docker --version'
+                sh 'printenv'
             }
         }
     }
