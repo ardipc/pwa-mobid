@@ -4,6 +4,7 @@ pipeline {
         stage('build') {
             steps {
                 sh 'date'
+                echo 'Pulling...' + env.BRANCH_NAME
                 sh 'npm --version'
                 sh 'node --version'
                 sh 'docker --version'
