@@ -4,6 +4,8 @@ pipeline {
         stage('build') {
             steps {
                 sh 'npm --version'
+                sh 'node --version'
+                sh 'docker --version'
             }
         }
     }
