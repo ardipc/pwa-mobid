@@ -9,3 +9,7 @@ Check [This](http://riset.carsworld.co.id:8092/).
 ## Created By
 
 This is a starter template for [Learn Next.js](https://nextjs.org/learn).
+
+## Author
+
+Ahmad Ardiansyah
