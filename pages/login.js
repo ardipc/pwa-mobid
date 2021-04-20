@@ -6,10 +6,12 @@ import Footer from '../components/footer'
 
 import Router from 'next/router'
 import { useState } from 'react'
+import Countdown from 'react-countdown'
 
 import { Modal } from 'react-bootstrap'
 
 import { userOTPRequest } from '../configs/api'
+import { toast } from 'react-toastify'
 
 import useUser from '../lib/useUser'
 import fetchJson from '../lib/fetchJson'
@@ -38,8 +40,13 @@ export default function Login() {
       userOTPRequest(user, via)
     }
     else {
-      console.log('Nomor kosong')
+      toast.info('Nomor kamu masih kosong')
     }
+  }
+
+  const kirimUlang = () => {
+    setVia(true)
+    setShow(false)
   }
 
   const btnValidasi = async (e) => {
@@ -62,6 +69,8 @@ export default function Login() {
       console.log('OTP kosong')
     }
   }
+
+  const Completionist = () => <span onClick={kirimUlang}>Kirim ulang</span>;
 
   return (
     <>
@@ -92,7 +101,7 @@ export default function Login() {
 
           <div className="text-center">
             <div className="d-grid gap-2 mb-3">
-              <button onClick={e => setVia(true)} className="btn btn-block btn-outline-primary">Lanjutkan</button>
+              <button onClick={e => user ? setVia(true) : toast.info('Nomor kamu masih kosong')} className="btn btn-block btn-outline-primary">Lanjutkan</button>
             </div>
 
             <p>Belum punya akun? <Link href="/daftar"><a className="text-decoration-none">Daftar</a></Link></p>
@@ -110,22 +119,38 @@ export default function Login() {
             </Modal.Body>
           </Modal>
 
-          <Modal show={show} onHide={handleClose} centered>
+          <Modal show={show} onHide={handleClose} centered backdrop="static" keyboard={false}>
             <Modal.Body>
               <h6>Masukkan kodenya, ya!</h6>
               <p>Masukkan kode verifikasi yang kami kirimkan ke nomor Kamu.</p>
 
+              {
+                msg ? <div className="text-center mt-4"><p className="text-danger">{msg}</p></div> : null
+              }
+
               <div className="input-group">
                 <input onChange={e => setOtp(e.target.value)} value={otp} placeholder="xxxx" type="text" className="form-control" aria-label="OTP" />
+              </div>
+
+              <div className="my-3 text-center">
+                <Countdown
+                  renderer={({ hours, minutes, seconds, completed }) => {
+                    if (completed) {
+                      return <Completionist />;
+                    } else {
+                      return <span>{minutes}:{seconds}</span>;
+                    }
+                  }}
+                  date={Date.now() + 60000 * 5} />
               </div>
 
               <div className="d-grid gap-2 mt-4">
                 <button onClick={btnValidasi} className="btn btn-primary">Verifikasi</button>
               </div>
 
-              {
-                msg ? <div className="text-center mt-4"><p className="text-danger">{msg}</p></div> : null
-              }
+              <div className="mt-3 text-center cursor-pointer">
+                <span onClick={handleClose}>Close</span>
+              </div>
             </Modal.Body>
           </Modal>
 

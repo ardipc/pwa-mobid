@@ -28,7 +28,7 @@ export default function Cari() {
           </h5>
 
           <div className="mb-2 mt-3">
-            <label htmlFor="nomor" className="form-label">Nomor atau Email</label>
+            <label htmlFor="nomor" className="form-label">Nomor HP Kamu</label>
             <input type="email" className="form-control" placeholder="Masukan nomor atau email" />
           </div>
           <div className="mb-4">

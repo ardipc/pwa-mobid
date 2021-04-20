@@ -28,6 +28,23 @@ import {
 import useUser from '../lib/useUser'
 import usePosition from '../lib/usePosition'
 
+export async function getStaticProps() {
+  const kategori      = await getAllKategori()
+
+  const merBody       = {
+    max: 5,
+    page: 0
+  }
+  const merchant      = await getAllMerchant(merBody)
+
+  const posts         = await getLatestPosts()
+
+  const propinsi      = await getPropinsi()
+  return {
+    props: { kategori, merchant, posts, propinsi },
+  }
+}
+
 function Home({ kategori, merchant, posts, propinsi }) {
 
   const { user } = useUser()
@@ -229,14 +246,6 @@ function Home({ kategori, merchant, posts, propinsi }) {
 
         <div className="divider"></div>
 
-        {
-          /*
-          <section className="bg-white p-3">
-            <MySlider sliders={mer} />
-          </section>
-          */
-        }
-
         <section className="bg-white p-3">
           <p className="h6 mb-3">
             Explore
@@ -272,6 +281,43 @@ function Home({ kategori, merchant, posts, propinsi }) {
 
         <div className="divider"></div>
 
+        {
+          mer.length > 0 ?
+          <>
+            <section className="bg-white px-3 py-3">
+              <p className="h6 mb-3">
+                Mobil Terbaru
+              </p>
+
+              <MySlider sliders={mer} />
+
+              <div className="row mt-3">
+                {
+                  mer.map((item, key) => (
+                    <article className="col-12 mb-3">
+                      <div className="card">
+                        <div className="bg-info square-140 responsive rounded" style={{backgroundImage: `url(${item.imageUrl})`}}></div>
+                        <div className="card-body pb-0">
+                          <h6 className="card-title mb-3">{item.name}</h6>
+                          <div className="progress">
+                            <div className="progress-bar" role="progressbar" style={{width: '50%'}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                          <p className="mt-2">
+                            Rp 1.500.000
+                            <span className="float-end">20 hari lagi</span>
+                          </p>
+                        </div>
+                      </div>
+                    </article>
+                  ))
+                }
+              </div>
+            </section>
+            <div className="divider"></div>
+          </>
+          : null
+        }
+
         <section className="bg-white p-3">
           <p className="h6 mb-3">
             Berita Terbaru
@@ -297,23 +343,6 @@ function Home({ kategori, merchant, posts, propinsi }) {
 
   </>
   )
-}
-
-export async function getStaticProps() {
-  const kategori      = await getAllKategori()
-
-  const merBody       = {
-    max: 10,
-    page: 0
-  }
-  const merchant      = await getAllMerchant(merBody)
-
-  const posts         = await getLatestPosts()
-
-  const propinsi      = await getPropinsi()
-  return {
-    props: { kategori, merchant, posts, propinsi },
-  }
 }
 
 export default Home;

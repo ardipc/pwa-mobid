@@ -99,7 +99,7 @@ function Konsultasi({ konsultasi, merchant }) {
                   {
                     indikasi.map((item, i) => (
                       <div key={`bt-${i}`} className="col-12 m-1">
-                        <Link href={item.id_artikel.split(':')[0] === 'tag' ? `/tags/${item.id_artikel.split(':')[1]}` : `/baca/${item.id_artikel}`}>
+                        <Link href={item.id_artikel ? (item.id_artikel.split(':')[0] === 'tag' ? `/tags/${item.id_artikel.split(':')[1]}` : `/baca/${item.id_artikel}`) : '/'}>
                           <button className="btn btn-outline-primary">{item.nama}</button>
                         </Link>
                       </div>

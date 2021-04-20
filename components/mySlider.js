@@ -10,7 +10,7 @@ export default function MySlider({ sliders }) {
     <OwlCarousel
       className='owl-theme'
       loop={true}
-      items={2}
+      items={1}
       center={true}
       responsiveRefreshRate={0}
       autoplay={true}
@@ -21,14 +21,14 @@ export default function MySlider({ sliders }) {
        "<i class='icon-arrow-prev'></i>",
        "<i class='icon-arrow-next'></i>"
       ]}
-      dots={false}
+      dots={true}
       margin={8}>
 
       {
         sliders.map((item, i) => (
           <div className="item" key={`slid-${i}`}>
             <Link href={`/details/${item.id}`}>
-              <div className="bg-info square-120 responsive rounded" style={{backgroundImage: `url(${item.imageUrl})`}}></div>
+              <div className="bg-info square-140 responsive rounded" style={{backgroundImage: `url(${item.imageUrl})`}}></div>
             </Link>
           </div>
         ))
