@@ -16,7 +16,15 @@ import { toast } from 'react-toastify'
 import useUser from '../lib/useUser'
 import fetchJson from '../lib/fetchJson'
 
-export default function Login() {
+export async function getServerSideProps({ params }) {
+  const timeToken = Date.now() + 60000 * 5
+
+  return {
+    props: { timeToken }
+  }
+}
+
+export default function Login({ timeToken }) {
 
   const { mutateUser } = useUser({
     redirectTo: '/akun',
@@ -71,6 +79,12 @@ export default function Login() {
   }
 
   const Completionist = () => <span onClick={kirimUlang}>Kirim ulang</span>;
+
+  const pad = (number, size) => {
+    var s = String(number)
+    while(s.length < (size || 2)) { s = "0" + s }
+    return s
+  }
 
   return (
     <>
@@ -138,10 +152,10 @@ export default function Login() {
                     if (completed) {
                       return <Completionist />;
                     } else {
-                      return <span>{minutes}:{seconds}</span>;
+                      return <span>{pad(minutes)}:{pad(seconds)}</span>;
                     }
                   }}
-                  date={Date.now() + 60000 * 5} />
+                  date={timeToken} />
               </div>
 
               <div className="d-grid gap-2 mt-4">

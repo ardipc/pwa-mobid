@@ -52,6 +52,11 @@ body {
   height: 140px;
 }
 
+.square-160 {
+  width: 100%;
+  height: 160px;
+}
+
 .news-img {
   width: 100%;
   height: 86px;

@@ -265,9 +265,11 @@ export default function Akun({ user, favorit }) {
             <li className="list-group-item p-3 cursor-pointer">
               <i className="bi bi-shield-check"></i> Syarat dan Ketentuan
             </li>
-            <li className="list-group-item p-3 cursor-pointer">
-              <i className="bi bi-chat-dots"></i> Tanya Jawab
-            </li>
+            <Link href="/faq">
+              <li className="list-group-item p-3 cursor-pointer">
+                <i className="bi bi-chat-dots"></i> Tanya Jawab
+              </li>
+            </Link>
             <li onClick={btnLogout} className="list-group-item p-3 cursor-pointer">
               <i className="bi bi-box-arrow-right"></i> Keluar
             </li>

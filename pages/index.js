@@ -15,6 +15,9 @@ import Berita from '../components/berita'
 import Explore from '../components/explore'
 
 import { toast } from 'react-toastify'
+import Countdown from 'react-countdown'
+
+import moment from 'moment-timezone'
 
 import {
   getAllKategori,
@@ -40,12 +43,37 @@ export async function getStaticProps() {
   const posts         = await getLatestPosts()
 
   const propinsi      = await getPropinsi()
+
+  const cars          = [
+    {
+      id: 3,
+      img: 'https://media.ed.edmunds-media.com/bmw/i8/2019/oem/2019_bmw_i8_coupe_base_fq_oem_1_1600.jpg',
+      name: 'BMW Razor',
+      price: 350000000,
+      time: '2021-04-22T16:15:00'
+    },
+    {
+      id: 1,
+      img: 'https://imgx.gridoto.com/crop/42x28:1898x1109/700x465/photo/2019/01/14/307035676.jpg',
+      name: 'Supra X 125',
+      price: 160000000,
+      time: '2021-04-22T14:30:00'
+    },
+    {
+      id: 2,
+      img: 'https://carsalesbase.com/wp-content/uploads/2020/02/European-sales-2019-Exotics-and-Sports-Cars.png',
+      name: 'Ferrari Sumarino',
+      price: 900000000,
+      time: '2021-04-22T13:45:00'
+    }
+  ]
+
   return {
-    props: { kategori, merchant, posts, propinsi },
+    props: { kategori, merchant, posts, propinsi, cars },
   }
 }
 
-function Home({ kategori, merchant, posts, propinsi }) {
+function Home({ kategori, merchant, posts, propinsi, cars }) {
 
   const { user } = useUser()
   const {latitude, longitude, error} = usePosition();
@@ -162,6 +190,19 @@ function Home({ kategori, merchant, posts, propinsi }) {
     { ssr: false }
   )
 
+  const pad = (number, size) => {
+    var s = String(number)
+    while(s.length < (size || 2)) { s = "0" + s }
+    return s
+  }
+
+  const rupiah = (angka) => {
+  	var rupiah = ''
+  	var angkarev = angka.toString().split('').reverse().join('')
+  	for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.'
+  	return 'Rp.'+rupiah.split('',rupiah.length-1).reverse().join('')+',-'
+  }
+
   return (
     <>
 
@@ -207,7 +248,7 @@ function Home({ kategori, merchant, posts, propinsi }) {
                     <ListGroup variant="flush">
                       {
                         kotaList.map((item, i) => (
-                          <ListGroup.Item className="cursor-pointer" onClick={e => chooseKota(item)}>{item.nama}</ListGroup.Item>
+                          <ListGroup.Item key={`ko-${i}`} className="cursor-pointer" onClick={e => chooseKota(item)}>{item.nama}</ListGroup.Item>
                         ))
                       }
                     </ListGroup>
@@ -293,18 +334,28 @@ function Home({ kategori, merchant, posts, propinsi }) {
 
               <div className="row mt-3">
                 {
-                  mer.map((item, key) => (
-                    <article className="col-12 mb-3">
+                  cars.map((item, key) => (
+                    <article className="col-12 mb-3" key={`caa-${key}`}>
                       <div className="card">
-                        <div className="bg-info square-140 responsive rounded" style={{backgroundImage: `url(${item.imageUrl})`}}></div>
+                        <div className="bg-info square-160 responsive rounded" style={{backgroundImage: `url(${item.img})`}}></div>
                         <div className="card-body pb-0">
                           <h6 className="card-title mb-3">{item.name}</h6>
                           <div className="progress">
-                            <div className="progress-bar" role="progressbar" style={{width: '50%'}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div className="progress-bar" role="progressbar" style={{width: '82%'}} aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                           <p className="mt-2">
-                            Rp 1.500.000
-                            <span className="float-end">20 hari lagi</span>
+                            {rupiah(item.price)}
+                            <span className="float-end badge bg-dark">
+                              <Countdown
+                                renderer={({ hours, minutes, seconds, completed }) => {
+                                  if (completed) {
+                                    return <>Done</>;
+                                  } else {
+                                    return <>{pad(hours)}:{pad(minutes)}:{pad(seconds)}</>;
+                                  }
+                                }}
+                                date={Date.now() + (moment(item.time).format('x') - Date.now())} />
+                            </span>
                           </p>
                         </div>
                       </div>
