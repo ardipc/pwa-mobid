@@ -9,7 +9,7 @@ pipeline {
                 sh 'node --version'
                 sh 'docker --version'
                 sh 'echo $GIT_BRANCH'
-                echo "SECRET_COOKIE_PASSWORD=2gGKJHHUQEasdqweQKDhPmPDL3sjHRErwsxwWE" > .env
+                sh 'echo "SECRET_COOKIE_PASSWORD=2gGKJHHUQEasdqweQKDhPmPDL3sjHRErwsxwWE" > .env'
                 sh 'printenv'
                 sh 'docker build -t ahmad/pwa-mobid:latest .'
             }
