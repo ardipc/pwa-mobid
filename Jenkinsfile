@@ -13,6 +13,7 @@ pipeline {
                 sh 'printenv'
                 sh 'docker build -t ahmad/pwa-mobid:latest .'
             }
+        }
         stage('deploy') {
             steps {
                 sh 'if [ "$(docker container ls | grep ahmad-pwa-mobid)" ]; then docker rm -f ahmad-pwa-mobid; else docker run -dit --name ahmad-pwa-mobid -p 4141:3000 ahmad/pwa-mobid; fi'
