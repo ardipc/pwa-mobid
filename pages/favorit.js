@@ -104,6 +104,22 @@ export default function Favorit({ user, posts }) {
           </p>
 
           {
+            merchant.length === 0 &&
+            <div>
+              <div className="update text-center m-3">
+                <Image
+                  src="/img/nodata.png"
+                  alt="No data"
+                  width={120}
+                  height={120}
+                />
+                <h5 className="mt-3">Oops</h5>
+                <p>Data yang Anda cari tidak ada.</p>
+              </div>
+            </div>
+          }
+
+          {
             merchant.map((item, i) => (
               <Explore item={item} key={`exp-${i}`} actions={{delFav}} dari="favorit" />
             ))

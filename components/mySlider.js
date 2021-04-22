@@ -28,7 +28,7 @@ export default function MySlider({ sliders }) {
         sliders.map((item, i) => (
           <div className="item" key={`slid-${i}`}>
             <Link href={`/details/${item.id}`}>
-              <div className="bg-info square-160 responsive rounded" style={{backgroundImage: `url(${item.imageUrl})`}}></div>
+              <div className="bg-info square-160 responsive rounded" style={{backgroundImage: `url(${item.img})`}}></div>
             </Link>
           </div>
         ))

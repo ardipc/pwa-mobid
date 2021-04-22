@@ -46,6 +46,13 @@ export async function getStaticProps() {
 
   const cars          = [
     {
+      id: 4,
+      img: 'https://i.pinimg.com/originals/6b/6d/55/6b6d559168641728b25f39d1829b9262.jpg',
+      name: 'Christopher Caruana Mustang',
+      price: 550000000,
+      time: '2021-04-22T20:15:00'
+    },
+    {
       id: 3,
       img: 'https://media.ed.edmunds-media.com/bmw/i8/2019/oem/2019_bmw_i8_coupe_base_fq_oem_1_1600.jpg',
       name: 'BMW Razor',
@@ -57,14 +64,14 @@ export async function getStaticProps() {
       img: 'https://imgx.gridoto.com/crop/42x28:1898x1109/700x465/photo/2019/01/14/307035676.jpg',
       name: 'Supra X 125',
       price: 160000000,
-      time: '2021-04-22T14:30:00'
+      time: '2021-04-22T17:30:00'
     },
     {
       id: 2,
       img: 'https://carsalesbase.com/wp-content/uploads/2020/02/European-sales-2019-Exotics-and-Sports-Cars.png',
       name: 'Ferrari Sumarino',
       price: 900000000,
-      time: '2021-04-22T13:45:00'
+      time: '2021-04-22T15:45:00'
     }
   ]
 
@@ -330,7 +337,7 @@ function Home({ kategori, merchant, posts, propinsi, cars }) {
                 Mobil Terbaru
               </p>
 
-              <MySlider sliders={mer} />
+              <MySlider sliders={cars} />
 
               <div className="row mt-3">
                 {
@@ -349,7 +356,7 @@ function Home({ kategori, merchant, posts, propinsi, cars }) {
                               <Countdown
                                 renderer={({ hours, minutes, seconds, completed }) => {
                                   if (completed) {
-                                    return <>Done</>;
+                                    return <>Selesai</>;
                                   } else {
                                     return <>{pad(hours)}:{pad(minutes)}:{pad(seconds)}</>;
                                   }

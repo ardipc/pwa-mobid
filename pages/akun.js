@@ -131,7 +131,10 @@ export default function Akun({ user, favorit }) {
                       <Spinner style={{position: 'relative', top: '30%'}} animation="grow" />
                     </div>
                   :
-                    <img alt={info.fullname} src={info.image_url} className="twPc-avatarImg" />
+                    info.image_url ?
+                      <img alt={info.fullname} src={info.image_url} className="twPc-avatarImg" />
+                    :
+                      <img alt={info.fullname} src={'/icons/mobile-96.png'} className="twPc-avatarImg" />
                 }
           		</a>
 
