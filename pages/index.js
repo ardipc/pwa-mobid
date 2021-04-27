@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 
 import Berita from '../components/berita'
 import Explore from '../components/explore'
+import ReactPaginate from 'react-paginate'
 
 import { toast } from 'react-toastify'
 import Countdown from 'react-countdown'
@@ -96,8 +97,9 @@ function Home({ kategori, merchant, posts, propinsi, cars }) {
   const [cari, setCari] = useState('');
 
   const [mer, setMer] = useState(merchant.result);
+  const [merPage, setMerPage] = useState(merchant.metadata);
 
-  useEffect(() => {
+  useEffect(async () => {
     if(latitude && longitude) {
       const pos = {lat: latitude, lng: longitude}
       localStorage.setItem('position', JSON.stringify(pos))
@@ -108,8 +110,14 @@ function Home({ kategori, merchant, posts, propinsi, cars }) {
 
     if(localStorage.getItem('kota')) {
       const parse = JSON.parse(localStorage.getItem('kota'))
-      const filter = mer.filter(row => row.kota === parse.nama)
-      setMer(filter)
+      const merBody       = {
+        max: 5,
+        page: 0,
+        kota: parse.nama
+      }
+      const request      = await getAllMerchant(merBody)
+      setMer(request.metadata.total ? request.result : [])
+      setMerPage(request.metadata)
     }
   }, [])
 
@@ -141,8 +149,14 @@ function Home({ kategori, merchant, posts, propinsi, cars }) {
     setKota(item)
     localStorage.setItem('kota', JSON.stringify(item))
 
-    const filter = mer.filter(row => row.kota === item.nama)
-    setMer(filter)
+    const merBody       = {
+      max: 5,
+      page: 0,
+      kota: item.nama
+    }
+    const request      = await getAllMerchant(merBody)
+    setMer(request.metadata.total ? request.result : [])
+    setMerPage(request.metadata)
 
     setShow(false)
   }
@@ -173,23 +187,38 @@ function Home({ kategori, merchant, posts, propinsi, cars }) {
 
   const submitCari = async (e) => {
     if (e.key === "Enter") {
-      const merBody = {
+      let merBody = {
         max: 10,
         page: 0,
         cari: cari
       }
+
+      if(kota) merBody.kota = kota.nama
 
       setLoad(true)
       const m = await getAllMerchant(merBody)
       let temp = []
 
       if(m.metadata.total > 0) {
-        temp = kota ? m.result.filter(item => item.kota === kota.nama) : m.result
+        temp = m.result
       }
 
       setMer(temp)
       setLoad(false)
     }
+  }
+
+  const loadMer = async (page) => {
+    let merBody       = {
+      max: 5,
+      page: page.selected,
+    }
+
+    if(kota) merBody.kota = kota.nama
+
+    const request      = await getAllMerchant(merBody)
+    setMer(request.result)
+    setMerPage(request.metadata)
   }
 
   const MySlider = dynamic(
@@ -325,6 +354,34 @@ function Home({ kategori, merchant, posts, propinsi, cars }) {
               <Explore item={item} key={`ex-${i}`} actions={{addFav}} />
             ))
           }
+
+          <ReactPaginate
+            onPageChange={(e) => {
+              loadMer(e)
+            }}
+            pageCount={Math.ceil(merPage.total/merPage.max)}
+            pageRangeDisplayed={8}
+            marginPagesDisplayed={0}
+            containerClassName={'pagination pagination-sm'}
+            pageClassName={'page-item'}
+            pageLinkClassName={'page-link'}
+            activeClassName={'active'}
+            previousLabel={
+              <a className="page-link">
+                <i className="bi bi-chevron-left"></i>
+              </a>
+            }
+            nextLabel={
+              <a className="page-link">
+                <i className="bi bi-chevron-right"></i>
+              </a>
+            }
+            breakClassName={'page-item'}
+            breakLinkClassName={'page-link'}
+            breakLabel={
+              <i className="bi bi-three-dots"></i>
+            } />
+
         </section>
 
         <div className="divider"></div>
