@@ -340,7 +340,7 @@ function Home({ kategori, merchant, posts, propinsi, cars }) {
                 <Image
                   src="/img/nodata.png"
                   alt="No data"
-                  width={120}
+                  width={140}
                   height={120}
                 />
                 <h5 className="mt-3">Oops</h5>
