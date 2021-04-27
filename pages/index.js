@@ -367,14 +367,10 @@ function Home({ kategori, merchant, posts, propinsi, cars }) {
             pageLinkClassName={'page-link'}
             activeClassName={'active'}
             previousLabel={
-              <a className="page-link">
-                <i className="bi bi-chevron-left"></i>
-              </a>
+              <i className="bi bi-chevron-left"></i>
             }
             nextLabel={
-              <a className="page-link">
-                <i className="bi bi-chevron-right"></i>
-              </a>
+              <i className="bi bi-chevron-right"></i>
             }
             breakClassName={'page-item'}
             breakLinkClassName={'page-link'}
